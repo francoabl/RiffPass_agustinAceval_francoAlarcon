@@ -1,0 +1,14 @@
+# SO / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+# Secretos
+.env
+*.pem
+*.key
+
+# Resultado de pruebas locales
+resultado-tests.txt
+probar-backend.bat
