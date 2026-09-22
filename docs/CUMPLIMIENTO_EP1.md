@@ -13,7 +13,7 @@ Estados:
 
 | Área | Ponderación de la pauta | Estado actual |
 |---|---:|---|
-| React + Amplify Authenticator + tokens | 60% | Pendiente |
+| React + Amplify Authenticator + tokens | 60% | Implementado localmente (codigo); Cognito real y verificacion de scopes pendientes |
 | Backend + validación JWT Cognito | 40% | Implementado y probado localmente; despliegue AWS pendiente |
 
 La EP1 completa aún no está al 100%. El backend está preparado para buscar el nivel máximo del segundo indicador, pero deben completarse AWS, frontend, GitHub y presentación.
@@ -30,7 +30,7 @@ La EP1 completa aún no está al 100%. El backend está preparado para buscar el
 | Backend protegido por API Gateway | REST API Regional, Cognito Authorizer, scopes y VPC Link V2 | Preparado | Invoke URL con 401/éxito y configuración de métodos |
 | Filtro JWT en cada backend | Spring Security Resource Server genera la cadena de filtros en ambos JAR | Implementado | Código, prueba directa a cada servicio y prueba por Gateway |
 | `.gitignore` correcto | Ignora target, datos, secretos, logs, IDE y configuración generada | Implementado | `git status` sin artefactos ni credenciales |
-| Código entregado vía GitHub | Repositorio aún no publicado | Pendiente | URL GitHub accesible al docente |
+| Código entregado vía GitHub | Repositorio publicado (privado) con backend y frontend | Implementado | URL GitHub accesible al docente |
 | Enlaces enviados por AVA y correo | Acción final del estudiante | Pendiente | Confirmación de entrega dentro del plazo |
 
 `riffpass-common` es una biblioteca incluida dentro de ambos JAR; no se presenta como un tercer microservicio.
@@ -75,7 +75,7 @@ No se debe enviar un ID token a los endpoints finales solo para obtener un claim
 
 ## Indicador frontend - 60%
 
-Todos estos puntos están pendientes y serán una etapa separada después de verificar el backend en AWS:
+Codigo implementado en `frontend/` (React + Vite + Amplify, login via Hosted UI). No probado aun contra un User Pool real ni contra API Gateway; estados de la tabla describen el requisito, no una verificacion en AWS:
 
 | Elemento textual de la rúbrica | Implementación requerida | Evidencia final |
 |---|---|---|

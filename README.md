@@ -18,7 +18,7 @@ La carpeta definitiva del proyecto es `C:\Users\franc\Proyectos\RiffPass`; el no
 - Backend implementado con dos microservicios, seguridad JWT de Cognito y PostgreSQL.
 - Pruebas locales del backend disponibles.
 - Despliegue en AWS Academy Learner Lab en curso.
-- Frontend aún pendiente.
+- Frontend: primera version implementada (React + Amplify Hosted UI); pendiente probar con Cognito real.
 
 ## Continuar con el backend
 

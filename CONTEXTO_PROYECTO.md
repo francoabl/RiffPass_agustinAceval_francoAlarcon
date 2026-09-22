@@ -301,3 +301,13 @@ No inventar esos valores. Documentar variables de entorno y ejemplos sin credenc
 - Verificación: 23 pruebas Java sin errores; prueba HTTP con ambos JAR, JWT firmados localmente, flujo de entradas y persistencia tras reinicio exitosa. Las pruebas Java de persistencia usan H2. No se ha probado una cuenta AWS real.
 - Guía principal: `backend/docs/AWS_PASO_A_PASO.md`. Contrato definitivo: `backend/docs/API.md`. Inicio y comandos del backend: `backend/README.md`.
 - Matriz de trazabilidad y evidencias para el 100%: `docs/CUMPLIMIENTO_EP1.md`. Debe actualizarse después de cada verificación real en AWS y al construir el frontend.
+
+## 13. Frontend implementado (Antonio, sesion Claude aparte)
+
+- React + Vite en `frontend/`, sin usar el widget clasico `<Authenticator>`: el login llama `signInWithRedirect()` (Hosted UI, Authorization Code + PKCE), porque es la unica forma de que el access token traiga los scopes de `resource-server-riffpass`. Documentado en `frontend/README.md`.
+- `apiFetch` (`frontend/src/api/apiFetch.js`) usa el access token (no el ID token), reintenta una vez con refresh en 401, y traduce las respuestas `application/problem+json` del backend a mensajes de error.
+- Vistas: catalogo de conciertos, detalle con cupos y "obtener entrada", crear concierto (ORGANIZADOR), mis entradas, validar entrada en puerta (ORGANIZADOR).
+- Rutas protegidas por sesion y por grupo de Cognito (`ORGANIZADOR`/`ASISTENTE`) via `cognito:groups` del access token.
+- Verificado: `npm run build` sin errores. No verificado: login real contra Cognito, ni que el Hosted UI efectivamente entregue los 4 scopes personalizados (pendiente hasta crear el User Pool real).
+- Variables de entorno en `frontend/.env.example`; nada de esto se probo contra AWS todavia.
+
