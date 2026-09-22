@@ -33,7 +33,7 @@ Vistas:
 cp .env.example .env
 ```
 
-Completa con los valores reales una vez creado el User Pool `riffpass-pool` y el App Client publico `riffpass-web` (ver `../backend/docs/AWS_PASO_A_PASO.md`):
+Completa con los valores reales del User Pool `riffpass-pool` y el App Client publico `riffpass-web` (ver `../backend/docs/AWS_PASO_A_PASO.md`):
 
 | Variable | De donde sale |
 |---|---|
@@ -53,13 +53,14 @@ npm run dev
 
 Sin `VITE_API_BASE_URL`, Vite redirige `/api/eventos*` a `localhost:8081` y `/api/entradas*` (y `/api/eventos/{id}/inventario|entradas`) a `localhost:8082`, siguiendo el contrato de `../backend/docs/API.md`. Con los dos microservicios corriendo localmente (ver `../backend/README.md`) y Cognito real configurado, el flujo funciona de punta a punta sin esperar el despliegue en AWS.
 
-## Pendiente de verificar con Cognito real
+## Verificacion con Cognito real
 
-- Que el flujo Hosted UI efectivamente devuelva los 4 scopes personalizados en el access token (revisar `access_token` decodificado, sin publicarlo).
-- CORS del User Pool/API Gateway con el origen real del frontend en produccion.
-- Roles: un usuario debe estar en el grupo `ORGANIZADOR` o `ASISTENTE` de Cognito para que `cognito:groups` traiga algo; por defecto el autorregistro no asigna grupo.
+- Verificado el 22/09/2026: Hosted UI con Authorization Code + PKCE vuelve a `http://localhost:5173/` y crea una sesion real.
+- El usuario de prueba `ORGANIZADOR` recibe su rol, ve las rutas autorizadas y consume por API Gateway el catalogo, detalle y entradas sin errores CORS.
+- Los endpoints protegidos responden usando el access token; el exito a traves de metodos con scopes en Gateway confirma que el token contiene los scopes solicitados.
+- La coleccion Postman paso 13/13 casos contra AWS, incluidos 401 sin token, 403 por rol y 409 por validacion repetida.
 
-No hay Cognito creado todavia (ver `../CONTEXTO_PROYECTO.md`), asi que este frontend no se ha probado contra una sesion real. Codigo verificado: `npm run build` sin errores.
+Pendiente: repetir el recorrido visual con `ASISTENTE` y guardar evidencias sin mostrar JWT completos. Login y logout reales desde React ya fueron verificados. Codigo verificado: `npm run build` sin errores.
 
 ## Ver las pantallas sin Cognito (modo vista previa)
 
@@ -70,18 +71,17 @@ Antes de tener Cognito real, se puede revisar el diseño y navegar todas las vis
 3. Un banner amarillo arriba de la pantalla recuerda que es vista previa.
 4. "Cerrar sesion" vuelve al login sin dejar rastro (no usa localStorage ni cookies).
 
-Este modo vive en `src/api/previewMode.js` y `src/api/mockBackend.js`. Nunca llama a `apiFetch` ni a Amplify, asi que funciona sin backend ni AWS Academy encendido. No reemplaza probar contra Cognito real: eso sigue pendiente (ver seccion anterior).
+Este modo vive en `src/api/previewMode.js` y `src/api/mockBackend.js`. Nunca llama a `apiFetch` ni a Amplify, asi que funciona sin backend ni AWS Academy encendido. No reemplaza las pruebas reales descritas en la seccion anterior.
 
-### Importante: correr esto FUERA de OneDrive
+### Ubicacion local
 
-Esta carpeta esta dentro de OneDrive, que sincroniza archivo por archivo y vuelve `npm install` extremadamente lento (miles de archivos en `node_modules`). Antes de instalar dependencias, copia la carpeta `frontend` a una ubicacion fuera de OneDrive, por ejemplo:
+El repositorio definitivo ya esta fuera de OneDrive. Ejecuta el frontend directamente desde:
 
 ```powershell
-Copy-Item -Recurse "C:\Users\aceva\OneDrive\Desktop\devosp\RiffPass_agustinAceval_francoAlarcon\frontend" "C:\Proyectos\RiffPass-frontend"
-cd "C:\Proyectos\RiffPass-frontend"
+Set-Location "C:\Users\franc\Proyectos\RiffPass\frontend"
 npm install
 npm run dev
 ```
 
-Abre `http://localhost:5173` y usa los botones de vista previa. Cuando termines de revisar el diseño, los cambios de codigo los sigues haciendo en la copia dentro de `devosp` (la que esta conectada a Git), no en esta copia de prueba.
+Abre exactamente `http://localhost:5173/`; ese origen debe coincidir con las callback y sign-out URLs configuradas en Cognito.
 

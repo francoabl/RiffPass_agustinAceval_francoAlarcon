@@ -27,8 +27,8 @@ export default function Login() {
         <div className="card preview-box">
           <h3>Vista previa (solo desarrollo)</h3>
           <p className="hint">
-            Cognito todavia no esta configurado. Estos botones cargan datos de ejemplo en memoria
-            para revisar las pantallas, sin backend ni AWS. No aparecen en la version de produccion.
+            Estos botones cargan datos de ejemplo en memoria para revisar las pantallas cuando el
+            laboratorio AWS no esta activo. No usan Cognito ni el backend y no aparecen en produccion.
           </p>
           <div className="actions">
             <button onClick={() => activarVistaPrevia('ASISTENTE')}>Ver como Asistente</button>

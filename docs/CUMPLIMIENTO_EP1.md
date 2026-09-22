@@ -13,8 +13,8 @@ Estados:
 
 | Área | Ponderación de la pauta | Estado actual |
 |---|---:|---|
-| React + Amplify Authenticator + tokens | 60% | Implementado localmente (codigo); Cognito real y verificacion de scopes pendientes |
-| Backend + validación JWT Cognito | 40% | Implementado y probado localmente; despliegue AWS pendiente |
+| React + Amplify Authenticator + tokens | 60% | React y Amplify Auth verificados con Cognito/API Gateway reales; falta cerrar la exigencia literal del componente Amplify UI Authenticator y probar ASISTENTE |
+| Backend + validación JWT Cognito | 40% | Desplegado en EC2/RDS y verificado por API Gateway; colección Postman 13/13 aprobada |
 
 La EP1 completa aún no está al 100%. El backend está preparado para buscar el nivel máximo del segundo indicador, pero deben completarse AWS, frontend, GitHub y presentación.
 
@@ -25,9 +25,9 @@ La EP1 completa aún no está al 100%. El backend está preparado para buscar el
 | Varios microservicios Java Spring Boot | `riffpass-eventos-service` y `riffpass-entradas-service` | Implementado | JAR separados, procesos y endpoints de ambos |
 | Backend compila y sigue buenas prácticas | Maven multi-módulo, capas, DTO, validación, transacciones, errores | Implementado | `mvnw clean verify` con BUILD SUCCESS |
 | Pruebas básicas | 23 pruebas Java y smoke test de dos JAR | Implementado | Salida de Maven y `SMOKE OK` |
-| Backend desplegado en EC2 | Dos procesos systemd en una EC2, con posibilidad de separar instancias | Preparado | `systemctl status`, health y logs sin secretos |
-| Base de datos cloud | PostgreSQL RDS, dos bases/usuarios, entidades, repositorios, propiedades y Flyway | Preparado | RDS conectado, tablas creadas y persistencia tras reinicio |
-| Backend protegido por API Gateway | REST API Regional, Cognito Authorizer, scopes y VPC Link V2 | Preparado | Invoke URL con 401/éxito y configuración de métodos |
+| Backend desplegado en EC2 | Dos procesos systemd en una EC2, con posibilidad de separar instancias | Verificado AWS | Ambos servicios activos y health `UP` |
+| Base de datos cloud | PostgreSQL RDS, dos bases/usuarios, entidades, repositorios, propiedades y Flyway | Verificado AWS | Aplicación conectada a PostgreSQL 17.11; el evento persistió tras reiniciar el laboratorio |
+| Backend protegido por API Gateway | REST API Regional, Cognito Authorizer, scopes y VPC Link V2 | Verificado AWS | API desplegada en `test`; 13/13 casos Postman aprobados |
 | Filtro JWT en cada backend | Spring Security Resource Server genera la cadena de filtros en ambos JAR | Implementado | Código, prueba directa a cada servicio y prueba por Gateway |
 | `.gitignore` correcto | Ignora target, datos, secretos, logs, IDE y configuración generada | Implementado | `git status` sin artefactos ni credenciales |
 | Código entregado vía GitHub | Repositorio publicado (privado) con backend y frontend | Implementado | URL GitHub accesible al docente |
@@ -53,15 +53,15 @@ La EP1 completa aún no está al 100%. El backend está preparado para buscar el
 ### Evidencias obligatorias en AWS
 
 - [ ] Access token real contiene `token_use=access`, `iss`, `client_id`, `exp`, `scope`, `sub` y `cognito:groups`.
-- [ ] Petición sin token a API Gateway responde 401.
+- [x] Petición sin token a API Gateway responde 401.
 - [ ] Token alterado o vencido es rechazado.
 - [ ] Token válido sin el scope del método es rechazado por API Gateway.
 - [ ] Backend directo también rechaza token incorrecto, demostrando doble validación.
-- [ ] Asistente con scope de escritura no puede crear un evento: 403 por rol.
+- [x] Asistente con scope de escritura no puede crear un evento: 403 por rol.
 - [ ] Organizador no puede editar ni validar recursos de otro organizador: 403.
-- [ ] Entrada válida se utiliza una vez; segundo intento: 409.
-- [ ] Reiniciar ambos servicios conserva datos en RDS.
-- [ ] Entidades, repositorios, Flyway y propiedades apuntan a la base cloud real.
+- [x] Entrada válida se utiliza una vez; segundo intento: 409.
+- [x] Reiniciar ambos servicios conserva datos en RDS.
+- [x] Entidades, repositorios, Flyway y propiedades apuntan a la base cloud real.
 
 ### Nota sobre audience en Cognito
 
@@ -75,22 +75,22 @@ No se debe enviar un ID token a los endpoints finales solo para obtener un claim
 
 ## Indicador frontend - 60%
 
-Codigo implementado en `frontend/` (React + Vite + Amplify, login via Hosted UI). No probado aun contra un User Pool real ni contra API Gateway; estados de la tabla describen el requisito, no una verificacion en AWS:
+Codigo implementado en `frontend/` (React + Vite + Amplify Auth, login via Hosted UI). Probado el 22/09/2026 con Cognito, API Gateway, EC2 y RDS reales:
 
 | Elemento textual de la rúbrica | Implementación requerida | Evidencia final |
 |---|---|---|
-| React completo y modular | Vistas de catálogo, detalle, mis entradas y panel organizador | Build sin errores y navegación funcional |
-| AWS Amplify Authenticator | Registro, confirmación, login y UI autenticada con Cognito | Demostración con usuario real |
-| Inicio y cierre de sesión | La sesión habilita rutas y logout elimina acceso | Flujo en navegador |
+| React completo y modular | Vistas de catálogo, detalle, mis entradas y panel organizador | Build sin errores; catálogo, detalle, entradas y ruta de organizador verificados |
+| AWS Amplify Authenticator | Actualmente usa Amplify Auth `signInWithRedirect` + Managed Login para conservar custom scopes | Login real verificado; pendiente resolver/documentar la exigencia literal del componente Amplify UI `Authenticator` |
+| Inicio y cierre de sesión | La sesión habilita rutas y logout elimina acceso | Login y logout reales verificados; tras salir vuelve a `/login` |
 | Todos los tokens necesarios | Obtener sesión de Cognito y utilizar access token correcto | Claims inspeccionados sin mostrar el JWT completo |
 | Rutas protegidas | Bloquear catálogo privado/panel según sesión y rol | Acceso anónimo redirigido al login |
 | `apiFetch` | Agregar `Authorization: Bearer`, manejar 401/403 y renovación mediante Amplify | Llamadas visibles en Network |
-| Consumir API Gateway | Base URL del stage `test`, nunca los puertos EC2 desde React | Respuesta real del Gateway |
-| Leer roles y scopes | `cognito:groups` y `scope` controlan interfaz, sin reemplazar seguridad backend | Usuario ve solo acciones permitidas |
+| Consumir API Gateway | Base URL del stage `test`, nunca los puertos EC2 desde React | Verificado: datos reales cargados por Gateway sin CORS |
+| Leer roles y scopes | `cognito:groups` y `scope` controlan interfaz, sin reemplazar seguridad backend | Verificado con ORGANIZADOR y métodos protegidos por scopes |
 | Vistas funcionales | Crear evento, habilitar cupos, obtener entrada, listar y validar | Recorrido completo |
 | CORS correcto | Origen exacto del frontend y OPTIONS sin sesión | Navegador sin error CORS |
 
-Punto crítico pendiente: verificar que el flujo usado por Amplify Authenticator obtenga un access token con los custom scopes configurados. Debe probarse con Cognito real; declarar scopes en código sin inspeccionar el token no constituye evidencia.
+Punto crítico pendiente: la pauta nombra expresamente **Amplify Authenticator**, mientras que la solución usa Amplify Auth con Managed Login para obtener custom scopes. No presentar `Authenticator.Provider` como cumplimiento si no se renderiza el componente. Confirmar el criterio con el docente o implementar una combinación honesta que no pierda los scopes OAuth.
 
 ## Estructura de trabajo del profesor aplicada
 
@@ -98,26 +98,26 @@ Punto crítico pendiente: verificar que el flujo usado por Amplify Authenticator
 |---|---|---|
 | Construir backend funcional | Dos JAR y smoke test | Completo localmente |
 | Probar primero el backend | Health, seguridad local y flujo entre servicios | Completo localmente |
-| Crear Cognito User Pool y App Client público | `riffpass-pool`, `riffpass-web`, sin client secret | Pendiente en AWS |
-| Configurar dominio, callback y Authorization Code + PKCE | Callback Postman exacta | Pendiente en AWS |
-| Crear Resource Server y scope completo | Cuatro scopes bajo `resource-server-riffpass` | Pendiente en AWS |
-| Obtener access token desde Postman | `openid email profile` + custom scopes | Pendiente en AWS |
-| Inspeccionar JWT y claims | Distinguir decodificar de verificar | Pendiente con token real |
-| Crear REST API y Cognito Authorizer | Token source `Authorization` | Plantilla lista; pendiente AWS |
-| Proteger métodos con scopes | Scope completo en Method Request | Plantilla lista; pendiente AWS |
-| Redeploy al stage `test` | Repetir tras cualquier cambio | Pendiente AWS |
-| Probar 401, permiso incorrecto y 200/201 | Colección Postman de 13 solicitudes | Preparada; pendiente AWS |
+| Crear Cognito User Pool y App Client público | `riffpass-pool`, `riffpass-web`, sin client secret | Verificado AWS |
+| Configurar dominio, callback y Authorization Code + PKCE | Postman y `http://localhost:5173/` autorizados | Verificado AWS |
+| Crear Resource Server y scope completo | Cuatro scopes bajo `resource-server-riffpass` | Verificado AWS |
+| Obtener access token desde Postman | `openid email profile` + custom scopes | Verificado AWS |
+| Inspeccionar JWT y claims | Distinguir decodificar de verificar | Token real utilizado; falta guardar evidencia segura de claims completos |
+| Crear REST API y Cognito Authorizer | Token source `Authorization` | Verificado AWS |
+| Proteger métodos con scopes | Scope completo en Method Request | Verificado AWS |
+| Redeploy al stage `test` | Repetir tras cualquier cambio | Verificado AWS |
+| Probar 401, permiso incorrecto y 200/201 | Colección Postman de 13 solicitudes | Verificado AWS: 13/13 |
 
 La guía del profesor utiliza PokeAPI como backend didáctico. RiffPass conserva el mismo flujo de identidad y autorización, sustituyendo PokeAPI por los microservicios Spring Boot exigidos en la evaluación.
 
 ## Learner Lab y control de sesiones
 
-- [ ] Iniciar Learner Lab y confirmar indicador verde.
-- [ ] Mantener todos los recursos en la misma región.
+- [x] Iniciar Learner Lab y confirmar indicador verde.
+- [x] Mantener todos los recursos en la misma región.
 - [ ] Renovar credenciales temporales solo cuando se use AWS CLI.
 - [ ] No guardar `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` ni `AWS_SESSION_TOKEN`.
-- [ ] Registrar IDs, ARN, endpoints y progreso antes del límite de cuatro horas.
-- [ ] Revisar recursos existentes al comenzar una sesión, evitando duplicados.
+- [x] Registrar IDs, ARN, endpoints y progreso antes del límite de cuatro horas.
+- [x] Revisar recursos existentes al comenzar una sesión, evitando duplicados.
 - [ ] Revisar presupuesto disponible sin alterar requisitos de la pauta.
 
 Los microservicios no dependen de credenciales AWS CLI: validan Cognito por JWKS y acceden a PostgreSQL con usuarios propios. La rotación de las credenciales del Learner Lab no obliga a recompilar los JAR.

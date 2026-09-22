@@ -1,6 +1,6 @@
 # RiffPass - Contexto académico y guía de trabajo
 
-Actualizado: 21 de septiembre de 2026.
+Actualizado: 22 de septiembre de 2026.
 
 ## 1. Decisiones del usuario y estado actual
 
@@ -12,7 +12,7 @@ Actualizado: 21 de septiembre de 2026.
 - Inicialmente solo existía `.git`. El usuario pidió posteriormente crear el backend y entregar una guía completa de AWS.
 - Backend implementado localmente el 21/09/2026. Consultar la sección 12 para decisiones y comprobaciones actuales; las propuestas anteriores se conservan como contexto.
 - El repositorio quedó organizado en `backend/` y `frontend/`; la documentación transversal permanece en la raíz y en `docs/`.
-- No hay despliegue cloud verificado. El usuario configurará AWS siguiendo `backend/docs/AWS_PASO_A_PASO.md`.
+- Despliegue cloud verificado: Cognito, API Gateway, VPC Link V2, ALB interno, EC2 con dos servicios y PostgreSQL RDS funcionan en `us-east-1`.
 - El entorno es AWS Academy Learner Lab. El usuario confirma acceso a Cognito, API Gateway, EC2, RDS y más servicios, con USD 50 de crédito. Las sesiones duran cuatro horas y las credenciales temporales de AWS CLI cambian al reiniciar el laboratorio.
 - Prioridad confirmada por el usuario: buscar el nivel máximo de la pauta EP1 y seguir la estructura enseñada por el profesor; no simplificar requisitos por consumo de créditos.
 
@@ -298,7 +298,10 @@ No inventar esos valores. Documentar variables de entorno y ejemplos sin credenc
 - Topología documentada: REST API Regional con Cognito -> VPC Link V2 -> ALB interno -> una EC2 con dos procesos -> RDS. No se exponen 8081/8082/5432 a Internet. La integración privada es una adaptación propia y requiere permisos/recursos adicionales respecto del laboratorio.
 - En EC2 se configura `SERVER_SERVLET_CONTEXT_PATH=/test` para conservar el stage que reenvía Gateway. ALB usa rutas `/test/api/...`; salud `/test/actuator/health`; Entradas usa `EVENTOS_BASE_URL=http://127.0.0.1:8081/test`.
 - Se incluyen scripts de instalación systemd, variables de ejemplo, creación de bases sin passwords, plantilla de importación Gateway y colección Postman con 13 solicitudes.
-- Verificación: 23 pruebas Java sin errores; prueba HTTP con ambos JAR, JWT firmados localmente, flujo de entradas y persistencia tras reinicio exitosa. Las pruebas Java de persistencia usan H2. No se ha probado una cuenta AWS real.
+- Verificación local: 23 pruebas Java sin errores; prueba HTTP con ambos JAR, JWT firmados localmente, flujo de entradas y persistencia tras reinicio exitosa. Las pruebas Java de persistencia usan H2.
+- AWS real verificado el 22/09/2026: ambos servicios activos, health `UP`, RDS PostgreSQL 17.11, API Gateway desplegada y colección Postman con 13/13 casos aprobados.
+- Frontend React verificado con un usuario `ORGANIZADOR` real mediante Amplify Auth + Managed Login (Authorization Code + PKCE): catálogo, detalle, entradas y rutas por rol consumen API Gateway sin errores CORS.
+- Riesgo pendiente de la pauta: esta solución usa `signInWithRedirect`, no el componente visual `@aws-amplify/ui-react` Authenticator. Mantener los custom scopes OAuth y confirmar o resolver el requisito literal sin declarar un cumplimiento ficticio.
 - Guía principal: `backend/docs/AWS_PASO_A_PASO.md`. Contrato definitivo: `backend/docs/API.md`. Inicio y comandos del backend: `backend/README.md`.
 - Matriz de trazabilidad y evidencias para el 100%: `docs/CUMPLIMIENTO_EP1.md`. Debe actualizarse después de cada verificación real en AWS y al construir el frontend.
 
