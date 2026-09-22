@@ -15,3 +15,8 @@
 .DS_Store
 backend/deploy/api-gateway.generated.json
 __pycache__/
+
+# Skills personales de agentes IA (no forman parte de la entrega academica)
+/.agents/
+/.claude/
+/skills-lock.json
