@@ -56,11 +56,11 @@ Sin `VITE_API_BASE_URL`, Vite redirige `/api/eventos*` a `localhost:8081` y `/ap
 ## Verificacion con Cognito real
 
 - Verificado el 22/09/2026: Hosted UI con Authorization Code + PKCE vuelve a `http://localhost:5173/` y crea una sesion real.
-- El usuario de prueba `ORGANIZADOR` recibe su rol, ve las rutas autorizadas y consume por API Gateway el catalogo, detalle y entradas sin errores CORS.
+- Los usuarios de prueba `ORGANIZADOR` y `ASISTENTE` reciben su rol, ven solamente la navegacion autorizada y consumen la API por API Gateway sin errores CORS.
 - Los endpoints protegidos responden usando el access token; el exito a traves de metodos con scopes en Gateway confirma que el token contiene los scopes solicitados.
 - La coleccion Postman paso 13/13 casos contra AWS, incluidos 401 sin token, 403 por rol y 409 por validacion repetida.
 
-Pendiente: repetir el recorrido visual con `ASISTENTE` y guardar evidencias sin mostrar JWT completos. Login y logout reales desde React ya fueron verificados. Codigo verificado: `npm run build` sin errores.
+Los recorridos visuales de `ASISTENTE` y `ORGANIZADOR`, incluido login y logout reales, fueron verificados despues del rediseño y se guardaron capturas sin JWT completos. Codigo verificado: `npm run build` sin errores. Sigue pendiente organizar la evidencia final del flujo de negocio completo y resolver o acordar con el docente la exigencia literal del componente Amplify UI `Authenticator`.
 
 ## Ver las pantallas sin Cognito (modo vista previa)
 

@@ -13,7 +13,7 @@ Estados:
 
 | Área | Ponderación de la pauta | Estado actual |
 |---|---:|---|
-| React + Amplify Authenticator + tokens | 60% | React y Amplify Auth verificados con Cognito/API Gateway reales; falta cerrar la exigencia literal del componente Amplify UI Authenticator y probar ASISTENTE |
+| React + Amplify Authenticator + tokens | 60% | React y Amplify Auth verificados con Cognito/API Gateway reales para `ORGANIZADOR` y `ASISTENTE`; falta cerrar la exigencia literal del componente Amplify UI Authenticator |
 | Backend + validación JWT Cognito | 40% | Desplegado en EC2/RDS y verificado por API Gateway; colección Postman 13/13 aprobada |
 
 La EP1 completa aún no está al 100%. El backend está preparado para buscar el nivel máximo del segundo indicador, pero deben completarse AWS, frontend, GitHub y presentación.
@@ -79,14 +79,14 @@ Codigo implementado en `frontend/` (React + Vite + Amplify Auth, login via Hoste
 
 | Elemento textual de la rúbrica | Implementación requerida | Evidencia final |
 |---|---|---|
-| React completo y modular | Vistas de catálogo, detalle, mis entradas y panel organizador | Build sin errores; catálogo, detalle, entradas y ruta de organizador verificados |
+| React completo y modular | Vistas de catálogo, detalle, mis entradas y panel organizador | Build sin errores después del rediseño; navegación y vistas autorizadas verificadas con ambos roles |
 | AWS Amplify Authenticator | Actualmente usa Amplify Auth `signInWithRedirect` + Managed Login para conservar custom scopes | Login real verificado; pendiente resolver/documentar la exigencia literal del componente Amplify UI `Authenticator` |
 | Inicio y cierre de sesión | La sesión habilita rutas y logout elimina acceso | Login y logout reales verificados; tras salir vuelve a `/login` |
 | Todos los tokens necesarios | Obtener sesión de Cognito y utilizar access token correcto | Claims inspeccionados sin mostrar el JWT completo |
 | Rutas protegidas | Bloquear catálogo privado/panel según sesión y rol | Acceso anónimo redirigido al login |
 | `apiFetch` | Agregar `Authorization: Bearer`, manejar 401/403 y renovación mediante Amplify | Llamadas visibles en Network |
 | Consumir API Gateway | Base URL del stage `test`, nunca los puertos EC2 desde React | Verificado: datos reales cargados por Gateway sin CORS |
-| Leer roles y scopes | `cognito:groups` y `scope` controlan interfaz, sin reemplazar seguridad backend | Verificado con ORGANIZADOR y métodos protegidos por scopes |
+| Leer roles y scopes | `cognito:groups` y `scope` controlan interfaz, sin reemplazar seguridad backend | Verificado con `ORGANIZADOR` y `ASISTENTE`; métodos protegidos por scopes responden correctamente |
 | Vistas funcionales | Crear evento, habilitar cupos, obtener entrada, listar y validar | Recorrido completo |
 | CORS correcto | Origen exacto del frontend y OPTIONS sin sesión | Navegador sin error CORS |
 

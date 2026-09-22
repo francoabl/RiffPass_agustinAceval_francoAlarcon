@@ -300,7 +300,7 @@ No inventar esos valores. Documentar variables de entorno y ejemplos sin credenc
 - Se incluyen scripts de instalación systemd, variables de ejemplo, creación de bases sin passwords, plantilla de importación Gateway y colección Postman con 13 solicitudes.
 - Verificación local: 23 pruebas Java sin errores; prueba HTTP con ambos JAR, JWT firmados localmente, flujo de entradas y persistencia tras reinicio exitosa. Las pruebas Java de persistencia usan H2.
 - AWS real verificado el 22/09/2026: ambos servicios activos, health `UP`, RDS PostgreSQL 17.11, API Gateway desplegada y colección Postman con 13/13 casos aprobados.
-- Frontend React verificado con un usuario `ORGANIZADOR` real mediante Amplify Auth + Managed Login (Authorization Code + PKCE): catálogo, detalle, entradas y rutas por rol consumen API Gateway sin errores CORS.
+- Frontend React verificado con usuarios reales `ORGANIZADOR` y `ASISTENTE` mediante Amplify Auth + Managed Login (Authorization Code + PKCE): ambos roles inician y cierran sesión, reciben su navegación autorizada y consumen API Gateway sin errores CORS. El usuario guardó capturas de ambos recorridos sin incorporarlas al repositorio.
 - Riesgo pendiente de la pauta: esta solución usa `signInWithRedirect`, no el componente visual `@aws-amplify/ui-react` Authenticator. Mantener los custom scopes OAuth y confirmar o resolver el requisito literal sin declarar un cumplimiento ficticio.
 - Guía principal: `backend/docs/AWS_PASO_A_PASO.md`. Contrato definitivo: `backend/docs/API.md`. Inicio y comandos del backend: `backend/README.md`.
 - Matriz de trazabilidad y evidencias para el 100%: `docs/CUMPLIMIENTO_EP1.md`. Debe actualizarse después de cada verificación real en AWS y al construir el frontend.
@@ -311,6 +311,6 @@ No inventar esos valores. Documentar variables de entorno y ejemplos sin credenc
 - `apiFetch` (`frontend/src/api/apiFetch.js`) usa el access token (no el ID token), reintenta una vez con refresh en 401, y traduce las respuestas `application/problem+json` del backend a mensajes de error.
 - Vistas: catalogo de conciertos, detalle con cupos y "obtener entrada", crear concierto (ORGANIZADOR), mis entradas, validar entrada en puerta (ORGANIZADOR).
 - Rutas protegidas por sesion y por grupo de Cognito (`ORGANIZADOR`/`ASISTENTE`) via `cognito:groups` del access token.
-- Verificado: `npm run build` sin errores. No verificado: login real contra Cognito, ni que el Hosted UI efectivamente entregue los 4 scopes personalizados (pendiente hasta crear el User Pool real).
-- Variables de entorno en `frontend/.env.example`; nada de esto se probo contra AWS todavia.
+- Verificado el 22/09/2026: `npm run build` sin errores después del rediseño visual; login y logout reales contra Cognito para `ORGANIZADOR` y `ASISTENTE`; navegación diferenciada por rol; Hosted UI entrega los scopes personalizados necesarios y las llamadas pasan por API Gateway sin errores CORS.
+- Variables de entorno documentadas en `frontend/.env.example`; el `.env` real permanece local e ignorado por Git. Sigue pendiente organizar la evidencia final y resolver o acordar con el docente la exigencia literal del componente visual Amplify UI `Authenticator`.
 
