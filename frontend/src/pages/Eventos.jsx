@@ -5,13 +5,14 @@ import { useAuth } from '../auth/AuthContext'
 
 const fmtFecha = (iso) => new Date(iso).toLocaleString('es-CL', { dateStyle: 'medium', timeStyle: 'short' })
 
-/** Genera un degrade unico y estable por concierto, a partir de su nombre. */
-function bandaColor(texto) {
-  let hash = 0
-  for (let i = 0; i < texto.length; i++) hash = texto.charCodeAt(i) + ((hash << 5) - hash)
-  const h1 = Math.abs(hash) % 360
-  const h2 = (h1 + 45) % 360
-  return `linear-gradient(120deg, hsl(${h1} 80% 55%), hsl(${h2} 80% 50%))`
+// Solo presentacion: separa dia / mes / anio para el bloque de fecha de la tarjeta.
+const partesFecha = (iso) => {
+  const d = new Date(iso)
+  return {
+    dia: d.toLocaleString('es-CL', { day: '2-digit' }),
+    mes: d.toLocaleString('es-CL', { month: 'short' }).replace('.', ''),
+    anio: d.getFullYear(),
+  }
 }
 
 export default function Eventos() {
@@ -33,9 +34,16 @@ export default function Eventos() {
       {error && <p className="error">{error}</p>}
       {cargando && <p className="hint">Cargando...</p>}
       <div className="grid">
-        {eventos.map((ev) => (
-          <Link className="card evento" to={`/eventos/${ev.id}`} key={ev.id}>
-            <div className="evento-banda" style={{ background: bandaColor(ev.nombre) }} />
+        {cargando && [0, 1, 2].map((i) => <div className="evento cargando" key={`sk-${i}`} aria-hidden="true" />)}
+        {eventos.map((ev, i) => {
+          const f = partesFecha(ev.fecha)
+          return (
+          <Link className="evento" to={`/eventos/${ev.id}`} key={ev.id} style={{ '--i': i }}>
+            <div className="evento-fecha" aria-hidden="true">
+              <span className="dia">{f.dia}</span>
+              <span className="mes">{f.mes}</span>
+              <span className="anio">{f.anio}</span>
+            </div>
             <div className="evento-body">
               {claims?.isOrganizador && claims?.sub === ev.organizadorSub && <span className="badge organizador">Tu evento</span>}
               <h3>{ev.nombre}</h3>
@@ -44,8 +52,9 @@ export default function Eventos() {
               <span className="fecha">{fmtFecha(ev.fecha)}</span>
             </div>
           </Link>
-        ))}
-        {!cargando && eventos.length === 0 && <p className="hint">Todavia no hay conciertos publicados.</p>}
+          )
+        })}
+        {!cargando && eventos.length === 0 && <p className="hint vacio">Todavia no hay conciertos publicados.</p>}
       </div>
     </div>
   )

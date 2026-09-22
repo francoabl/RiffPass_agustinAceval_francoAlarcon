@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { crearEvento } from '../api/eventos'
+import SubmitButton from '../components/SubmitButton'
 
 const vacio = { nombre: '', artista: '', recinto: '', ciudad: '', descripcion: '', fecha: '' }
 
 export default function CrearEvento() {
   const [form, setForm] = useState(vacio)
   const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
   const navigate = useNavigate()
 
   const cambiar = (e) => setForm({ ...form, [e.target.name]: e.target.value })
@@ -14,6 +16,7 @@ export default function CrearEvento() {
   const enviar = async (e) => {
     e.preventDefault()
     setError('')
+    setEnviando(true)
     try {
       // El input datetime-local no trae zona horaria; se interpreta como hora local
       // y se convierte a ISO-UTC, que es lo que pide el backend.
@@ -22,6 +25,7 @@ export default function CrearEvento() {
       navigate(`/eventos/${evento.id}`)
     } catch (err) {
       setError(err.message)
+      setEnviando(false)
     }
   }
 
@@ -54,7 +58,7 @@ export default function CrearEvento() {
           Fecha y hora
           <input type="datetime-local" name="fecha" value={form.fecha} onChange={cambiar} required />
         </label>
-        <button className="primary">Publicar concierto</button>
+        <SubmitButton submitting={enviando}>Publicar concierto</SubmitButton>
       </form>
     </div>
   )

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { obtenerEvento, editarEvento, consultarInventario, habilitarInventario, obtenerEntradaPara } from '../api/eventos'
 import { useAuth } from '../auth/AuthContext'
+import SubmitButton from '../components/SubmitButton'
 
 const fmtFecha = (iso) => new Date(iso).toLocaleString('es-CL', { dateStyle: 'full', timeStyle: 'short' })
 
@@ -14,6 +15,9 @@ export default function EventoDetalle() {
   const [ok, setOk] = useState('')
   const [capacidad, setCapacidad] = useState('')
   const [edicion, setEdicion] = useState(null) // {nombre, descripcion} mientras se edita
+  const [guardando, setGuardando] = useState(false)
+  const [habilitando, setHabilitando] = useState(false)
+  const [obteniendo, setObteniendo] = useState(false)
 
   const esDueno = evento && claims?.sub === evento.organizadorSub
 
@@ -28,6 +32,7 @@ export default function EventoDetalle() {
   const guardarEdicion = async (e) => {
     e.preventDefault()
     setError('')
+    setGuardando(true)
     try {
       const actualizado = await editarEvento(id, edicion)
       setEvento(actualizado)
@@ -35,30 +40,38 @@ export default function EventoDetalle() {
       setOk('Concierto actualizado.')
     } catch (err) {
       setError(err.message)
+    } finally {
+      setGuardando(false)
     }
   }
 
   const habilitarCupos = async (e) => {
     e.preventDefault()
     setError('')
+    setHabilitando(true)
     try {
       await habilitarInventario(id, Number(capacidad))
       setOk('Cupos habilitados.')
       cargar()
     } catch (err) {
       setError(err.message)
+    } finally {
+      setHabilitando(false)
     }
   }
 
   const obtenerEntrada = async () => {
     setError('')
     setOk('')
+    setObteniendo(true)
     try {
       const entrada = await obtenerEntradaPara(id)
       setOk(`Entrada obtenida. Codigo: ${entrada.codigo}. Guardalo, lo pedira el organizador en la puerta.`)
       cargar()
     } catch (err) {
       setError(err.message)
+    } finally {
+      setObteniendo(false)
     }
   }
 
@@ -108,8 +121,8 @@ export default function EventoDetalle() {
             <textarea value={edicion.descripcion} onChange={(e) => setEdicion({ ...edicion, descripcion: e.target.value })} />
           </label>
           <div className="actions">
-            <button className="primary">Guardar</button>
-            <button type="button" onClick={() => setEdicion(null)}>Cancelar</button>
+            <SubmitButton submitting={guardando}>Guardar</SubmitButton>
+            <button type="button" onClick={() => setEdicion(null)} disabled={guardando}>Cancelar</button>
           </div>
         </form>
       )}
@@ -119,7 +132,7 @@ export default function EventoDetalle() {
         {inventario ? (
           <div className="progreso-cupos">
             <div className="progreso-barra">
-              <div className="progreso-relleno" style={{ width: `${porcentaje}%` }} />
+              <div className="progreso-relleno" style={{ transform: `scaleX(${porcentaje / 100})` }} />
             </div>
             <div className="progreso-texto">
               <span>{inventario.emitidas} de {inventario.capacidad} emitidas</span>
@@ -143,7 +156,7 @@ export default function EventoDetalle() {
                 required
               />
             </label>
-            <button className="primary">Habilitar cupos</button>
+            <SubmitButton submitting={habilitando}>Habilitar cupos</SubmitButton>
           </form>
         )}
       </div>
@@ -152,13 +165,13 @@ export default function EventoDetalle() {
         <div className="card">
           <h3>Tu entrada</h3>
           <p className="hint">Una entrada por persona y concierto. El codigo se pide en la puerta.</p>
-          <button
-            className="primary"
+          <SubmitButton
+            submitting={obteniendo}
             disabled={!inventario || inventario.disponibles < 1}
             onClick={obtenerEntrada}
           >
             Obtener entrada
-          </button>
+          </SubmitButton>
           {(!inventario || inventario.disponibles < 1) && <p className="hint">No hay cupos disponibles todavia.</p>}
         </div>
       )}

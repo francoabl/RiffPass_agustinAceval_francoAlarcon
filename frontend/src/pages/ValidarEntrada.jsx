@@ -1,22 +1,27 @@
 import { useState } from 'react'
 import { validarEntrada } from '../api/entradas'
+import SubmitButton from '../components/SubmitButton'
 
 /** Uso en la puerta del concierto: solo el organizador dueno del evento puede validar. */
 export default function ValidarEntrada() {
   const [codigo, setCodigo] = useState('')
   const [resultado, setResultado] = useState(null)
   const [error, setError] = useState('')
+  const [validando, setValidando] = useState(false)
 
   const enviar = async (e) => {
     e.preventDefault()
     setError('')
     setResultado(null)
+    setValidando(true)
     try {
       const entrada = await validarEntrada(codigo.trim())
       setResultado(entrada)
       setCodigo('')
     } catch (err) {
       setError(err.message)
+    } finally {
+      setValidando(false)
     }
   }
 
@@ -28,7 +33,7 @@ export default function ValidarEntrada() {
           Codigo de la entrada
           <input value={codigo} onChange={(e) => setCodigo(e.target.value)} placeholder="Ej: AB12-CD34" required />
         </label>
-        <button className="primary">Validar</button>
+        <SubmitButton submitting={validando}>Validar</SubmitButton>
       </form>
       {error && <p className="error">{error}</p>}
       {resultado && (

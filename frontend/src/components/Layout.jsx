@@ -6,7 +6,7 @@ function LogoMark() {
   return (
     <span className="brand-mark" aria-hidden="true">
       <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
-        <path d="M12 9v10.2a3 3 0 1 0 2 2.83V13l6-1.4v6.6a3 3 0 1 0 2 2.83V7l-10 2Z" fill="white" />
+        <path d="M12 9v10.2a3 3 0 1 0 2 2.83V13l6-1.4v6.6a3 3 0 1 0 2 2.83V7l-10 2Z" fill="currentColor" />
       </svg>
     </span>
   )
@@ -34,7 +34,7 @@ export default function Layout() {
           {claims?.isOrganizador && <NavLink to="/validar">Validar entrada</NavLink>}
         </nav>
         <span className="user">
-          {claims?.email ?? claims?.username}
+          <span className="user-email">{claims?.email ?? claims?.username}</span>
           {claims?.isOrganizador && <span className="badge organizador">Organizador</span>}
           {claims?.isAsistente && <span className="badge asistente">Asistente</span>}
           <button onClick={cerrarSesion}>Cerrar sesion</button>
