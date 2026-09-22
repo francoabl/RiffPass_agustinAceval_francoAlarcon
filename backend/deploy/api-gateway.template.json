@@ -48,10 +48,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://__ALB_DNS__/api/eventos",
+          "uri": "http://__ALB_DNS__/test/api/eventos",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000
         }
@@ -74,10 +74,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://__ALB_DNS__/api/eventos",
+          "uri": "http://__ALB_DNS__/test/api/eventos",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000
         }
@@ -145,10 +145,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://__ALB_DNS__/api/eventos/{id}",
+          "uri": "http://__ALB_DNS__/test/api/eventos/{id}",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
           "requestParameters": {
@@ -181,10 +181,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "PUT",
-          "uri": "http://__ALB_DNS__/api/eventos/{id}",
+          "uri": "http://__ALB_DNS__/test/api/eventos/{id}",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
           "requestParameters": {
@@ -255,10 +255,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://__ALB_DNS__/api/eventos/{id}/inventario",
+          "uri": "http://__ALB_DNS__/test/api/eventos/{id}/inventario",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
           "requestParameters": {
@@ -291,10 +291,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://__ALB_DNS__/api/eventos/{id}/inventario",
+          "uri": "http://__ALB_DNS__/test/api/eventos/{id}/inventario",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
           "requestParameters": {
@@ -365,10 +365,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://__ALB_DNS__/api/eventos/{id}/entradas",
+          "uri": "http://__ALB_DNS__/test/api/eventos/{id}/entradas",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
           "requestParameters": {
@@ -432,10 +432,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "GET",
-          "uri": "http://__ALB_DNS__/api/entradas/mias",
+          "uri": "http://__ALB_DNS__/test/api/entradas/mias",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000
         }
@@ -496,10 +496,10 @@
         "x-amazon-apigateway-integration": {
           "type": "http_proxy",
           "httpMethod": "POST",
-          "uri": "http://__ALB_DNS__/api/entradas/validar",
+          "uri": "http://__ALB_DNS__/test/api/entradas/validar",
           "connectionType": "VPC_LINK",
           "connectionId": "__VPC_LINK_ID__",
-          "integration-target": "__ALB_ARN__",
+          "integrationTarget": "__ALB_ARN__",
           "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000
         }

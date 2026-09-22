@@ -385,7 +385,7 @@ Usa una línea por variable, sin `export`. Si un valor contiene espacios, escrí
 
 No definas `SPRING_PROFILES_ACTIVE=local` en EC2: queremos RDS. Deja `COGNITO_AUDIENCE` sin definir para el flujo del profesor, que comprueba el App Client mediante `client_id`. Si más adelante configuras resource binding, esa variable permite exigir también el `aud` de la API.
 
-**El contexto /test es intencional:** una integración REST privada reenvía el stage a su backend. Ambos JAR aceptarán `/test/api/...`, y Entradas utiliza `/test` al consultar Eventos. No añadas simultáneamente reglas para quitar el stage. [Comportamiento de integraciones privadas](https://docs.aws.amazon.com/apigateway/latest/developerguide/private-integration.html).
+**El contexto /test es intencional:** las integraciones REST privadas de esta plantilla incluyen explícitamente `/test` en su Endpoint URL. Ambos JAR aceptan `/test/api/...`, y Entradas utiliza `/test` al consultar Eventos. El stage público también se llama `test`, pero su nombre no se debe suponer añadido automáticamente a la URL de integración REST.
 
 Inicia:
 
@@ -535,7 +535,7 @@ En **Integration Request** verifica:
 - Tipo VPC Link, proxy habilitado.
 - VPC Link V2 correcto y ALB correcto.
 - Método HTTP igual al método de entrada.
-- Endpoint `http://TU_DNS_ALB/api/...`, sin añadir `/test` en la plantilla.
+- Endpoint `http://TU_DNS_ALB/test/api/...`, incluyendo explícitamente `/test`.
 - Para `{id}`, mapping `integration.request.path.id <- method.request.path.id`.
 - Reenvío del header Authorization mediante la integración proxy.
 
@@ -554,7 +554,7 @@ Por cada fila de la tabla:
 3. Activa VPC proxy integration.
 4. Integration HTTP method: el mismo.
 5. Elige VPC Link V2 y ALB.
-6. Endpoint URL: `http://TU_DNS_ALB` + ruta de esa fila.
+6. Endpoint URL: `http://TU_DNS_ALB/test` + ruta de esa fila.
 7. Si lleva `{id}`, en Method Request decláralo y en Integration Request mapea `id` desde `method.request.path.id`.
 8. Crea el authorizer Cognito descrito arriba y asócialo al método.
 9. Agrega el scope principal completo.
