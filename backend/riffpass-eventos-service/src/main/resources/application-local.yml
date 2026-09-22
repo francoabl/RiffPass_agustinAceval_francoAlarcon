@@ -1,0 +1,6 @@
+# Solo cambia la base de datos. La seguridad Cognito permanece activa.
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/eventos;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;WRITE_DELAY=0
+    username: sa
+    password: ""

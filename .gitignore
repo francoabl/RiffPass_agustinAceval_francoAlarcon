@@ -1,0 +1,17 @@
+# Archivos temporales de inspección de documentos
+/tmp/
+/.tools/
+**/target/
+**/data/
+.env
+*.env
+!*.env.example
+*.pem
+*.key
+*.log
+.idea/
+*.iml
+.vscode/
+.DS_Store
+backend/deploy/api-gateway.generated.json
+__pycache__/

@@ -1,0 +1,564 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api-riffpass-rest",
+    "version": "1.0.0",
+    "description": "RiffPass - REST API con Cognito y VPC Link V2. Importar después de renderizar los IDs reales."
+  },
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Cognito-riffpass": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-amazon-apigateway-authtype": "cognito_user_pools",
+      "x-amazon-apigateway-authorizer": {
+        "type": "cognito_user_pools",
+        "providerARNs": [
+          "__COGNITO_POOL_ARN__"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/api/eventos": {
+      "get": {
+        "summary": "Listar conciertos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/eventos-read"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://__ALB_DNS__/api/eventos",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000
+        }
+      },
+      "post": {
+        "summary": "Crear concierto",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/eventos-write"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "POST",
+          "uri": "http://__ALB_DNS__/api/eventos",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{id}": {
+      "get": {
+        "summary": "Detalle del concierto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/eventos-read"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://__ALB_DNS__/api/eventos/{id}",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.id": "method.request.path.id"
+          }
+        }
+      },
+      "put": {
+        "summary": "Editar nombre y descripción",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/eventos-write"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "PUT",
+          "uri": "http://__ALB_DNS__/api/eventos/{id}",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.id": "method.request.path.id"
+          }
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{id}/inventario": {
+      "post": {
+        "summary": "Habilitar cupos",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/entradas-write"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "POST",
+          "uri": "http://__ALB_DNS__/api/eventos/{id}/inventario",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.id": "method.request.path.id"
+          }
+        }
+      },
+      "get": {
+        "summary": "Consultar cupos",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/entradas-read"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://__ALB_DNS__/api/eventos/{id}/inventario",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.id": "method.request.path.id"
+          }
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eventos/{id}/entradas": {
+      "post": {
+        "summary": "Obtener entrada",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/entradas-write"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "POST",
+          "uri": "http://__ALB_DNS__/api/eventos/{id}/entradas",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.id": "method.request.path.id"
+          }
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/entradas/mias": {
+      "get": {
+        "summary": "Mis entradas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/entradas-read"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://__ALB_DNS__/api/entradas/mias",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/entradas/validar": {
+      "post": {
+        "summary": "Validar ingreso",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/entradas-write"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "POST",
+          "uri": "http://__ALB_DNS__/api/entradas/validar",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integration-target": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000
+        }
+      },
+      "options": {
+        "summary": "Preflight CORS sin sesión",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "CORS",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "mock",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\":200}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-endpoint-configuration": {
+    "types": [
+      "REGIONAL"
+    ]
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_4XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'__CORS_ORIGIN__'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'"
+      }
+    }
+  }
+}
