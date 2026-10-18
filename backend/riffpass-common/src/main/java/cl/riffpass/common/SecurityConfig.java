@@ -38,7 +38,7 @@ public class SecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>(scopes.convert(jwt));
             List<String> groups = jwt.getClaimAsStringList("cognito:groups");
-            if (groups != null) groups.stream().filter(g -> Set.of("ASISTENTE", "ORGANIZADOR").contains(g))
+            if (groups != null) groups.stream().filter(g -> Set.of("ASISTENTE", "ORGANIZADOR", "ADMINISTRADOR").contains(g))
                     .map(g -> new SimpleGrantedAuthority("ROLE_" + g)).forEach(authorities::add);
             return authorities;
         });
@@ -72,7 +72,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource(@Value("${riffpass.cors-origins:http://localhost:5173}") String origins) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.stream(origins.split(",")).map(String::trim).toList());
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setExposedHeaders(List.of("Location"));
         config.setAllowCredentials(false);

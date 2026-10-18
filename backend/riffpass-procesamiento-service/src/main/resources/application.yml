@@ -1,0 +1,44 @@
+server:
+  port: ${PORT:8083}
+  error:
+    include-message: never
+    include-stacktrace: never
+  shutdown: graceful
+spring:
+  application:
+    name: riffpass-procesamiento-service
+  config:
+    import: classpath:riffpass-mensajeria.yml
+  lifecycle:
+    timeout-per-shutdown-phase: 25s
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 10000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+riffpass:
+  security:
+    issuer: ${COGNITO_ISSUER}
+    client-id: ${COGNITO_CLIENT_ID}
+    audience: ${COGNITO_AUDIENCE:}
+  cors-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  # Identifica a cada réplica en los logs para evidenciar el reparto de mensajes.
+  instancia: ${INSTANCIA:procesamiento-${PORT:8083}}

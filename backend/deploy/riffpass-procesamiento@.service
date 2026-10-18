@@ -1,0 +1,25 @@
+[Unit]
+Description=RiffPass consumidor SQS, réplica %i
+After=network-online.target riffpass@mensajeria-admin.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=riffpass
+Group=riffpass
+WorkingDirectory=/opt/riffpass
+EnvironmentFile=/etc/riffpass/procesamiento-%i.env
+ExecStart=/usr/bin/java -Xms96m -Xmx320m -jar /opt/riffpass/riffpass-procesamiento-service.jar
+Restart=on-failure
+RestartSec=10
+SuccessExitStatus=143
+# Apagado ordenado: el contenedor SQS termina los mensajes en curso antes de salir.
+TimeoutStopSec=40
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

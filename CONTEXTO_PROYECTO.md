@@ -314,3 +314,50 @@ No inventar esos valores. Documentar variables de entorno y ejemplos sin credenc
 - Verificado el 22/09/2026: `npm run build` sin errores después del rediseño visual; login y logout reales contra Cognito para `ORGANIZADOR` y `ASISTENTE`; navegación diferenciada por rol; Hosted UI entrega los scopes personalizados necesarios y las llamadas pasan por API Gateway sin errores CORS.
 - Variables de entorno documentadas en `frontend/.env.example`; el `.env` real permanece local e ignorado por Git. Sigue pendiente organizar la evidencia final y resolver o acordar con el docente la exigencia literal del componente visual Amplify UI `Authenticator`.
 
+## 14. Presentación EP1
+
+- Presentación HTML interactiva creada en `presentacion/riffpass-ep1.html`, con recursos locales en `presentacion/assets/` para funcionar sin conexión.
+- Orden narrativo: caso y reglas de negocio, flujo funcional, arquitectura AWS, seguridad JWT, microservicios, persistencia, frontend, evidencias, cobertura de pauta y demostración.
+- Incluye capturas verificadas del frontend por rol, EC2, ALB, VPC Link y la colección Postman con 13/13 casos aprobados.
+- Tiempo planificado: aproximadamente 15 minutos de exposición y cerca de 5 minutos para preguntas, dentro del máximo total de 20 minutos indicado por el profesor.
+- Conserva visible el riesgo de la pauta: Amplify Auth con Cognito Managed Login cumple el flujo OAuth y los custom scopes, pero no renderiza el componente visual `<Authenticator>`.
+
+
+## 15. Evaluación Parcial 2: mensajería SNS/SQS
+
+Fuente: `C:/Users/franc/Downloads/Evaluacion_Parcial_2_Encargo_y_Presentacion_Requerimientos(1).pdf`, leído el 18/10/2026.
+
+- **Plazo:** el encargo vence el miércoles 21/10/2026 a las 14:29 y no se consideran commits posteriores. Las presentaciones son individuales, de 5 a 10 minutos, desde el 21/10.
+- **Ponderación:** el encargo vale 12% y la presentación 18%.
+- **Requisitos:**
+  - 1 tópico SNS y 3 colas SQS con funciones distintas, cada una con su DLQ mediante Redrive Policy.
+  - Fanout y filtros de suscripción.
+  - Productores y consumidores `@SqsListener` organizados por dominio.
+  - ACK explícito; reintento de errores recuperables y DLQ para los no recuperables; tolerancia a duplicados; logs con id, intento y causa.
+  - Nombres centralizados y topología en clases de configuración.
+  - Administrador REST: crear y eliminar colas y tópicos, suscripciones, estado, pausar y reanudar, reprocesar y purgar la DLQ, todo en un servicio dedicado.
+  - Retención justificada y alarma de CloudWatch sobre las DLQ.
+  - Se mantiene todo lo de EP1 y se revisan sus pendientes.
+- **Aspectos formales:**
+  - Un único repositorio con el formato `nombreproyecto_apellido1_apellido2`. El nombre actual (`RiffPass_agustinAceval_francoAlarcon`) incluye nombres de pila; está pendiente confirmar si se renombra.
+  - Cada commit debe llevar el nombre y apellido del autor, y ambos integrantes deben tener commits.
+  - Hay que invitar como colaborador a `ab.silvaf@profesor.duoc.cl`.
+- **Decisión de implementación (18/10/2026, aprobada por el usuario):**
+  - Tópico `riffpass-eventos` con las colas `riffpass-tickets` (filtro `ENTRADA_EMITIDA`), `riffpass-notificaciones` (`ENTRADA_EMITIDA`, `EVENTO_CREADO`) y `riffpass-auditoria` (sin filtro), cada una con su DLQ.
+  - Nuevos módulos `riffpass-mensajeria` (biblioteca), `riffpass-procesamiento-service` (consumidor; el nombre reemplaza al propuesto `riffpass-notificaciones-service` porque atiende tres dominios) y `riffpass-mensajeria-admin-service`.
+  - El administrador requiere el grupo Cognito `ADMINISTRADOR` y el scope nuevo `resource-server-riffpass/mensajeria-admin`.
+  - El consumidor usa la base RDS `riffpass_procesamiento`, se ejecuta en dos réplicas (8083 y 8085) y el administrador usa el puerto 8084.
+  - La EC2 debe usar `LabInstanceProfile` y conviene subirla a `t3.medium`.
+- **Estado:**
+  - Implementado y probado localmente (`mvnw test` sin fallas).
+  - No está desplegado en AWS ni verificado con recursos reales.
+  - No se modificó el frontend.
+- **Pendientes:**
+  - Cognito: scope y grupo.
+  - RDS: base nueva.
+  - EC2: rol y tipo de instancia.
+  - ALB: regla `/test/api/admin/*`.
+  - Gateway: recurso `/api/admin/{proxy+}` y redeploy.
+  - Ensayar el guion de `backend/docs/MENSAJERIA.md`.
+  - Pendientes formales: nombre del repositorio, autores de commits e invitación al docente.
+  - Pendiente de EP1: el componente `<Authenticator>`.

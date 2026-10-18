@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:8084}
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: riffpass-mensajeria-admin-service
+  config:
+    import: classpath:riffpass-mensajeria.yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+riffpass:
+  security:
+    issuer: ${COGNITO_ISSUER}
+    client-id: ${COGNITO_CLIENT_ID}
+    audience: ${COGNITO_AUDIENCE:}
+  cors-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  admin:
+    # Al iniciar, crea o ajusta el tópico, las colas, DLQ, suscripciones y alarmas declaradas.
+    declarar-topologia: ${DECLARAR_TOPOLOGIA:true}
+    # Réplicas del consumidor que se pausan y reanudan (URL base incluyendo el context path).
+    consumidores: ${CONSUMIDORES_URLS:http://localhost:8083}

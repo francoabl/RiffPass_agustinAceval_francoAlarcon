@@ -540,6 +540,44 @@
           }
         }
       }
+    },
+    "/api/admin/{proxy+}": {
+      "x-amazon-apigateway-any-method": {
+        "summary": "Microservicio administrador de mensajería (tópicos, colas, suscripciones, consumidores y DLQ)",
+        "parameters": [
+          {
+            "name": "proxy",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta del microservicio"
+          }
+        },
+        "security": [
+          {
+            "Cognito-riffpass": [
+              "resource-server-riffpass/mensajeria-admin"
+            ]
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "type": "http_proxy",
+          "httpMethod": "ANY",
+          "uri": "http://__ALB_DNS__/test/api/admin/{proxy}",
+          "connectionType": "VPC_LINK",
+          "connectionId": "__VPC_LINK_ID__",
+          "integrationTarget": "__ALB_ARN__",
+          "passthroughBehavior": "when_no_match",
+          "timeoutInMillis": 29000,
+          "requestParameters": {
+            "integration.request.path.proxy": "method.request.path.proxy"
+          }
+        }
+      }
     }
   },
   "x-amazon-apigateway-endpoint-configuration": {

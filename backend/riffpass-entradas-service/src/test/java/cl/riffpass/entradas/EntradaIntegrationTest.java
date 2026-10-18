@@ -1,6 +1,7 @@
 package cl.riffpass.entradas;
 
 import cl.riffpass.common.ApiException;
+import cl.riffpass.mensajeria.*;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.*;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.event.*;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -22,7 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@RecordApplicationEvents
 class EntradaIntegrationTest {
+    @Autowired ApplicationEvents mensajes;
     @Autowired EntradaService service;
     @Autowired EntradaRepository entradas;
     @Autowired InventarioRepository inventarios;
@@ -44,6 +48,18 @@ class EntradaIntegrationTest {
         assertEquals(0, service.mias("otro",0,20).size());
         assertEquals(409, assertThrows(ApiException.class, () -> service.emitir(eventoId,"ana","token")).getStatus().value());
         assertEquals(1, service.cupos(eventoId).disponibles());
+    }
+    @Test void publishesIssuedAndValidatedMessagesOnlyOnSuccess() {
+        open(1);
+        var entrada = service.emitir(eventoId, "ana", "token");
+        assertThrows(ApiException.class, () -> service.emitir(eventoId, "ana", "token"));
+        service.validar(entrada.codigo(), "owner", "token");
+        var publicados = mensajes.stream(EventoMensaje.class).toList();
+        assertEquals(List.of(TipoEvento.ENTRADA_EMITIDA, TipoEvento.ENTRADA_VALIDADA),
+                publicados.stream().map(EventoMensaje::tipo).toList());
+        assertEquals("ana", publicados.get(0).dato("titularSub"));
+        assertEquals(entrada.codigo().toString(), publicados.get(1).dato("codigo"));
+        assertEquals("owner", publicados.get(1).dato("validadaPor"));
     }
     @Test void validatesOnlyByOwnerAndOnlyOnce() {
         open(1);

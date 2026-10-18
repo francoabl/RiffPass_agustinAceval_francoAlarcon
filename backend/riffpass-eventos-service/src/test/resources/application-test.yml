@@ -7,3 +7,5 @@ riffpass:
   security:
     issuer: https://test.example/pool
     client-id: test-client
+  mensajeria:
+    habilitada: false

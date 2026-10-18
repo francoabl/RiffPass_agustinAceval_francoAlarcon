@@ -3,6 +3,18 @@
   <parent><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId><version>3.5.16</version><relativePath/></parent>
   <groupId>cl.riffpass</groupId><artifactId>riffpass-backend</artifactId><version>1.0.0</version><packaging>pom</packaging>
   <name>RiffPass Backend</name>
-  <modules><module>riffpass-common</module><module>riffpass-eventos-service</module><module>riffpass-entradas-service</module></modules>
-  <properties><java.version>21</java.version></properties>
+  <modules>
+    <module>riffpass-common</module>
+    <module>riffpass-mensajeria</module>
+    <module>riffpass-eventos-service</module>
+    <module>riffpass-entradas-service</module>
+    <module>riffpass-procesamiento-service</module>
+    <module>riffpass-mensajeria-admin-service</module>
+  </modules>
+  <properties><java.version>21</java.version><spring-cloud-aws.version>3.4.2</spring-cloud-aws.version></properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency><groupId>io.awspring.cloud</groupId><artifactId>spring-cloud-aws-dependencies</artifactId><version>${spring-cloud-aws.version}</version><type>pom</type><scope>import</scope></dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

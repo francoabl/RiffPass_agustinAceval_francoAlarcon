@@ -1,5 +1,6 @@
 package cl.riffpass.eventos;
 
+import cl.riffpass.mensajeria.*;
 import java.time.Instant;
 import java.util.*;
 import org.junit.jupiter.api.*;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.event.*;
 import org.springframework.test.web.servlet.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -17,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@RecordApplicationEvents
 class EventoIntegrationTest {
+    @Autowired ApplicationEvents mensajes;
     @Autowired MockMvc mvc;
     @Autowired EventoRepository repository;
     private org.springframework.test.web.servlet.request.RequestPostProcessor actor(String sub, String role, String... scopes) {
@@ -50,6 +54,10 @@ class EventoIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         UUID id = UUID.fromString(new com.fasterxml.jackson.databind.ObjectMapper().readTree(content).get("id").asText());
         assertTrue(repository.existsById(id));
+        EventoMensaje creado = mensajes.stream(EventoMensaje.class).findFirst().orElseThrow();
+        assertEquals(TipoEvento.EVENTO_CREADO, creado.tipo());
+        assertEquals(id.toString(), creado.dato("eventoId"));
+        assertEquals("owner", creado.dato("organizadorSub"));
         mvc.perform(put("/api/eventos/" + id).with(actor("intruso", "ORGANIZADOR", "eventos-write"))
                 .contentType("application/json").content("{\"nombre\":\"Otro\",\"descripcion\":\"Cambio\"}"))
                 .andExpect(status().isForbidden());

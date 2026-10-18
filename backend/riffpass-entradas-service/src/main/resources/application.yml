@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: riffpass-entradas-service
+  config:
+    import: classpath:riffpass-mensajeria.yml
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}

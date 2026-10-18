@@ -1,0 +1,56 @@
+# Topología de mensajería de RiffPass: ÚNICA fuente de nombres y parámetros.
+# Todos los microservicios la importan con spring.config.import.
+spring:
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
+riffpass:
+  mensajeria:
+    habilitada: ${MENSAJERIA_HABILITADA:true}
+    # Solo para la demostración: permite que el administrador inyecte fallos controlados.
+    simulacion-fallos: ${MENSAJERIA_SIMULACION_FALLOS:false}
+    topico: riffpass-eventos
+    colas:
+      # Ruta 1, entrega selectiva: solo ENTRADA_EMITIDA genera un comprobante.
+      tickets:
+        nombre: riffpass-tickets
+        dlq: riffpass-tickets-dlq
+        consumidor: consumidor-tickets
+        descripcion: Genera el comprobante digital de cada entrada emitida
+        tipos: [ENTRADA_EMITIDA]
+        max-recepciones: 3
+        visibilidad: 30s
+        retencion: 4d
+        retencion-dlq: 14d
+        espera-largo-sondeo: 20s
+      # Ruta 2, entrega selectiva: aviso al titular y anuncio de conciertos nuevos.
+      notificaciones:
+        nombre: riffpass-notificaciones
+        dlq: riffpass-notificaciones-dlq
+        consumidor: consumidor-notificaciones
+        descripcion: Notifica al asistente y anuncia conciertos nuevos
+        tipos: [ENTRADA_EMITIDA, EVENTO_CREADO]
+        max-recepciones: 5
+        visibilidad: 30s
+        retencion: 1d
+        retencion-dlq: 7d
+        espera-largo-sondeo: 20s
+      # Ruta 3, fanout sin filtro: bitácora de todos los hechos del sistema.
+      auditoria:
+        nombre: riffpass-auditoria
+        dlq: riffpass-auditoria-dlq
+        consumidor: consumidor-auditoria
+        descripcion: Bitácora y estadísticas de todos los eventos del sistema
+        tipos: []
+        max-recepciones: 5
+        visibilidad: 30s
+        retencion: 7d
+        retencion-dlq: 14d
+        espera-largo-sondeo: 20s
+    alarmas:
+      habilitadas: ${MENSAJERIA_ALARMAS:true}
+      prefijo: riffpass-dlq-con-mensajes
+      topico-alertas: riffpass-alertas
+      # Opcional: si se define, SNS envía un correo de confirmación de suscripción a esta dirección.
+      email: ${ALARMA_EMAIL:}
