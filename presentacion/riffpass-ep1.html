@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>RiffPass · Presentación EP1 DSY1107</title>
+  <style>
+    @font-face {
+      font-family: "Big Shoulders";
+      src: url("assets/big-shoulders-900.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Archivo";
+      src: url("assets/archivo-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Archivo";
+      src: url("assets/archivo-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    :root {
+      --ink: #080b23;
+      --navy: #0e1538;
+      --navy-2: #151e4b;
+      --cream: #f7f1e5;
+      --paper: #fff9ed;
+      --orange: #ffa62f;
+      --orange-2: #ff7638;
+      --purple: #8f5cff;
+      --violet: #412180;
+      --mint: #65deb1;
+      --red: #ff6b57;
+      --muted: #aab1cf;
+      --line: rgba(255,255,255,.16);
+      --shadow: 0 30px 80px rgba(0,0,0,.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #03050f; }
+    body { font-family: "Archivo", Arial, sans-serif; color: var(--cream); }
+    button { font: inherit; }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: #03050f;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      padding: clamp(34px, 4.8vw, 78px) clamp(38px, 6vw, 104px);
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 88% 8%, rgba(143,92,255,.20), transparent 32%),
+        radial-gradient(circle at 8% 92%, rgba(255,166,47,.16), transparent 28%),
+        linear-gradient(145deg, #080b23 0%, #10183c 54%, #0a0e29 100%);
+    }
+
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+      animation: reveal .42s ease both;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(12px) scale(.995); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 560px;
+      height: 560px;
+      border: 2px solid rgba(255,166,47,.12);
+      border-radius: 48% 52% 70% 30% / 45% 38% 62% 55%;
+      right: -270px;
+      bottom: -300px;
+      transform: rotate(-12deg);
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 430px;
+      height: 250px;
+      left: -190px;
+      top: -150px;
+      border-radius: 50%;
+      background: rgba(143,92,255,.08);
+      filter: blur(1px);
+    }
+
+    .eyebrow {
+      color: var(--orange);
+      font-size: clamp(12px, 1.1vw, 18px);
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 {
+      font-family: "Big Shoulders", Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .015em;
+      line-height: .93;
+    }
+    h1 { font-size: clamp(74px, 10vw, 164px); margin-bottom: 20px; }
+    h2 { font-size: clamp(48px, 6vw, 92px); margin-bottom: clamp(20px, 3vh, 42px); max-width: 1120px; }
+    h3 { font-size: clamp(26px, 2.6vw, 44px); color: var(--cream); margin-bottom: 12px; }
+    p, li, td, th { font-size: clamp(16px, 1.45vw, 24px); line-height: 1.45; }
+    p.lead { font-size: clamp(20px, 2vw, 32px); max-width: 850px; color: #d8dcef; }
+    .muted { color: var(--muted); }
+    .orange { color: var(--orange); }
+    .mint { color: var(--mint); }
+    .purple { color: #bda6ff; }
+
+    .slide-no {
+      position: absolute;
+      right: clamp(30px, 4vw, 70px);
+      bottom: clamp(24px, 3.5vh, 48px);
+      color: rgba(255,255,255,.35);
+      font: 900 clamp(30px, 3vw, 52px)/1 "Big Shoulders";
+      letter-spacing: .06em;
+    }
+
+    .footer-mark {
+      position: absolute;
+      left: clamp(30px, 4vw, 70px);
+      bottom: clamp(26px, 3.5vh, 50px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .note-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background: var(--orange);
+      font-weight: 900;
+    }
+
+    .cover {
+      padding: 0;
+      justify-content: flex-end;
+      background: #070817;
+    }
+    .cover::before, .cover::after { display: none; }
+    .cover-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 61% center;
+      filter: saturate(.72) contrast(1.12) brightness(.62);
+      z-index: -2;
+    }
+    .cover-shade {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(5,5,20,.98) 0%, rgba(5,5,20,.82) 42%, rgba(5,5,20,.22) 76%),
+        linear-gradient(0deg, rgba(5,5,20,.88) 0%, transparent 45%);
+    }
+    .cover-copy {
+      width: min(800px, 72vw);
+      margin: 0 0 clamp(70px, 10vh, 130px) clamp(45px, 7vw, 120px);
+    }
+    .cover h1 { margin-bottom: 10px; text-shadow: 0 7px 40px rgba(0,0,0,.55); }
+    .cover .subtitle {
+      color: var(--orange);
+      font-size: clamp(18px, 1.9vw, 30px);
+      font-weight: 600;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .cover-meta {
+      margin-top: 32px;
+      color: #d7d9e7;
+      font-size: clamp(14px, 1.2vw, 19px);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: clamp(28px, 5vw, 86px);
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+    }
+    .two-col.equal { grid-template-columns: 1fr 1fr; }
+    .two-col.wide-right { grid-template-columns: .72fr 1.28fr; }
+
+    .photo-frame {
+      position: relative;
+      min-height: 58vh;
+      overflow: hidden;
+      border: 1px solid rgba(255,166,47,.45);
+      box-shadow: var(--shadow);
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .photo-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(8,11,35,.8));
+    }
+
+    .rules {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+    }
+    .rules li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 14px;
+      margin-bottom: 17px;
+      color: #e7e8f3;
+    }
+    .rules .num {
+      font: 900 30px/1 "Big Shoulders";
+      color: var(--orange);
+    }
+
+    .role-band {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 26px;
+    }
+    .role {
+      border-top: 4px solid var(--orange);
+      padding: 22px 4px 0;
+    }
+    .role:last-child { border-color: var(--purple); }
+    .role p { color: #cdd1e7; max-width: 460px; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+      align-items: start;
+      margin-top: 5vh;
+      position: relative;
+    }
+    .flow::before {
+      content: "";
+      position: absolute;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--purple));
+      top: 42px;
+      left: 8%;
+      right: 8%;
+      z-index: -1;
+    }
+    .flow-step { text-align: center; }
+    .flow-step .disc {
+      width: 86px;
+      height: 86px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      border: 3px solid var(--orange);
+      box-shadow: 0 0 0 8px rgba(255,166,47,.09);
+      font: 900 36px/1 "Big Shoulders";
+    }
+    .flow-step:nth-child(n+4) .disc { border-color: var(--purple); box-shadow: 0 0 0 8px rgba(143,92,255,.1); }
+    .flow-step h3 { font-size: clamp(23px, 2.2vw, 36px); }
+    .flow-step p { color: var(--muted); font-size: clamp(14px, 1.2vw, 19px); }
+
+    .arch {
+      display: grid;
+      grid-template-columns: 1.2fr .16fr 1fr .16fr 1.18fr;
+      grid-template-rows: repeat(2, minmax(120px, 1fr));
+      gap: 16px 14px;
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+    }
+    .node {
+      background: rgba(14,21,56,.78);
+      border: 1px solid rgba(255,255,255,.18);
+      padding: clamp(17px, 2vw, 28px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .node strong { font: 900 clamp(26px, 2.5vw, 42px)/1 "Big Shoulders"; text-transform: uppercase; }
+    .node span { color: var(--muted); margin-top: 9px; font-size: clamp(13px, 1.1vw, 18px); line-height: 1.35; }
+    .node.orange-edge { border-left: 6px solid var(--orange); }
+    .node.purple-edge { border-left: 6px solid var(--purple); }
+    .node.mint-edge { border-left: 6px solid var(--mint); }
+    .connector {
+      display: grid;
+      place-items: center;
+      color: var(--orange);
+      font: 900 42px/1 "Big Shoulders";
+    }
+    .architecture-slide h2 { font-size: clamp(46px, 5vw, 76px); margin-bottom: 22px; max-width: 1260px; }
+    .arch .browser { grid-column: 1; grid-row: 1 / span 2; }
+    .arch > .connector:nth-child(2) { grid-column: 2; grid-row: 1 / span 2; }
+    .arch .gateway { grid-column: 3; grid-row: 1 / span 2; }
+    .arch > .connector:nth-child(4) { grid-column: 4; grid-row: 1 / span 2; }
+    .arch .private-stack { grid-column: 5; grid-row: 1 / span 2; display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
+    .arch-label {
+      position: absolute;
+      right: 104px;
+      top: 100px;
+      color: var(--mint);
+      font-size: 13px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .security-layers {
+      display: grid;
+      grid-template-columns: .8fr 1.25fr .95fr;
+      gap: clamp(22px, 3vw, 48px);
+      flex: 1;
+      align-items: stretch;
+    }
+    .token-stack, .check-stack, .permission-stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .token {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .token strong { display: block; font-size: clamp(18px, 1.7vw, 27px); margin-bottom: 6px; }
+    .token span { color: var(--muted); font-size: clamp(13px, 1.12vw, 18px); }
+    .check {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: start;
+      gap: 12px;
+      margin: 9px 0;
+    }
+    .check b { color: var(--mint); font-size: 22px; }
+    .check span { font-size: clamp(15px, 1.25vw, 20px); line-height: 1.35; }
+    .formula {
+      font: 900 clamp(29px, 3.4vw, 52px)/1.1 "Big Shoulders";
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .formula i { display: block; color: var(--orange); font-style: normal; margin: 9px 0; }
+    .formula small { display: block; color: var(--muted); font: 400 clamp(14px, 1.15vw, 18px)/1.4 "Archivo"; text-transform: none; margin-top: 18px; }
+
+    .service-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      flex: 1;
+      align-items: start;
+    }
+    .service {
+      border-top: 5px solid var(--orange);
+      padding-top: 24px;
+    }
+    .service:last-child { border-color: var(--purple); }
+    .service .port { color: var(--muted); font-size: 14px; letter-spacing: .15em; text-transform: uppercase; }
+    .service ul { padding-left: 22px; }
+    .service li { margin: 12px 0; }
+    .service-footer {
+      border-top: 1px solid var(--line);
+      margin-top: 24px;
+      padding-top: 18px;
+      color: var(--mint);
+      font-weight: 600;
+    }
+
+    .consistency {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 5vw;
+      align-items: center;
+      flex: 1;
+    }
+    .big-number {
+      font: 900 clamp(100px, 16vw, 240px)/.78 "Big Shoulders";
+      color: var(--orange);
+      letter-spacing: -.035em;
+    }
+    .big-caption {
+      max-width: 520px;
+      font-size: clamp(21px, 2.2vw, 34px);
+      line-height: 1.25;
+      color: #d9dced;
+      margin-top: 28px;
+    }
+    .guard {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .guard .index { font: 900 34px/1 "Big Shoulders"; color: var(--purple); }
+    .guard strong { display: block; font-size: clamp(17px, 1.4vw, 22px); margin-bottom: 6px; }
+    .guard p { color: var(--muted); font-size: clamp(14px, 1.12vw, 18px); margin: 0; }
+
+    .screen-stage {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 24px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+    }
+    .screen {
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.2);
+      background: #050817;
+    }
+    .frontend-slide h2 { font-size: clamp(46px, 5.2vw, 80px); margin-bottom: 20px; }
+    .screen.large { height: 54vh; }
+    .screen.small { height: 35vh; }
+    .screen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .screen-label {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      padding: 9px 13px;
+      color: var(--ink);
+      background: var(--orange);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .screen.small .screen-label { background: #c2b2ff; }
+    .screen-copy {
+      align-self: end;
+      padding: 16px 0 26px;
+    }
+    .screen-copy h3 { font-size: clamp(25px, 2.2vw, 36px); margin-bottom: 8px; }
+    .screen-copy p { color: var(--muted); font-size: clamp(15px, 1.25vw, 20px); }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 26px;
+      flex: 1;
+      min-height: 0;
+    }
+    .evidence-main, .evidence-side figure {
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.18);
+      background: #fff;
+    }
+    .evidence-main img, .evidence-side img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .evidence-side { display: grid; grid-template-rows: 1fr 1fr; gap: 22px; }
+    .caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px 14px;
+      color: white;
+      background: rgba(8,11,35,.88);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .postman {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+    .postman figure {
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid rgba(101,222,177,.45);
+      background: #202020;
+    }
+    .postman img { width: 100%; height: 100%; object-fit: contain; }
+    .score {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-4deg);
+      padding: 16px 24px;
+      color: var(--ink);
+      background: var(--mint);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+      font: 900 clamp(36px, 4vw, 64px)/.9 "Big Shoulders";
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .rubric {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 5vw;
+      flex: 1;
+      align-items: center;
+    }
+    .weight {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .weight .pct { font: 900 clamp(60px, 7vw, 106px)/1 "Big Shoulders"; color: var(--orange); }
+    .weight:last-child .pct { color: var(--purple); }
+    .weight h3 { margin: 0 0 7px; }
+    .weight p { color: var(--muted); font-size: clamp(14px, 1.18vw, 19px); margin: 0; }
+    .coverage { border-left: 1px solid var(--line); padding-left: 3vw; }
+    .coverage p { margin-bottom: 18px; }
+    .coverage strong { color: var(--mint); }
+    .risk {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 3px solid var(--orange);
+      color: #e2e4f1;
+      font-size: clamp(14px, 1.15vw, 18px);
+    }
+
+    .demo {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 5vw;
+      flex: 1;
+      align-items: center;
+    }
+    .demo-path {
+      counter-reset: demo;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .demo-path li {
+      counter-increment: demo;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      margin: 10px 0;
+      align-items: center;
+    }
+    .demo-path li::before {
+      content: counter(demo, decimal-leading-zero);
+      color: var(--orange);
+      font: 900 28px/1 "Big Shoulders";
+    }
+    .demo-path span { font-size: clamp(16px, 1.45vw, 23px); }
+    .timebox {
+      padding: 34px;
+      border: 1px solid rgba(255,166,47,.5);
+      background: rgba(8,11,35,.52);
+    }
+    .timebox .minutes { font: 900 clamp(96px, 13vw, 190px)/.78 "Big Shoulders"; color: var(--orange); }
+    .timebox p { color: var(--muted); margin-top: 24px; }
+
+    .closing {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background:
+        linear-gradient(rgba(6,7,23,.62), rgba(6,7,23,.9)),
+        url("assets/banda-escenario.jpg") center 38% / cover;
+    }
+    .closing::before, .closing::after { display: none; }
+    .closing h2 { font-size: clamp(74px, 10vw, 150px); max-width: 1100px; margin-bottom: 24px; }
+    .closing .summary {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px 44px;
+      color: #e7e7ef;
+      font-size: clamp(16px, 1.35vw, 22px);
+      font-weight: 600;
+    }
+    .closing .url {
+      margin-top: 36px;
+      color: var(--orange);
+      font-size: clamp(17px, 1.5vw, 24px);
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 100;
+      right: 18px;
+      top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: .32;
+      transition: opacity .2s ease;
+    }
+    .controls:hover { opacity: 1; }
+    .controls button {
+      border: 1px solid rgba(255,255,255,.22);
+      color: white;
+      background: rgba(8,11,35,.76);
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+    }
+    .controls .counter {
+      min-width: 64px;
+      text-align: center;
+      font-size: 12px;
+      color: white;
+      background: rgba(8,11,35,.76);
+      padding: 10px;
+    }
+    .progress {
+      position: fixed;
+      z-index: 101;
+      left: 0;
+      bottom: 0;
+      height: 4px;
+      width: 0;
+      background: linear-gradient(90deg, var(--orange), var(--purple));
+      transition: width .3s ease;
+    }
+    .notes-panel {
+      display: none;
+      position: fixed;
+      z-index: 120;
+      left: 30px;
+      right: 30px;
+      bottom: 30px;
+      max-height: 30vh;
+      overflow: auto;
+      padding: 20px 24px;
+      color: #15172c;
+      background: rgba(255,249,237,.96);
+      border-top: 5px solid var(--orange);
+      box-shadow: var(--shadow);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .notes-panel.open { display: block; }
+    .notes { display: none; }
+
+    @media (max-width: 900px) {
+      .slide { padding: 46px 36px 62px; overflow-y: auto; }
+      .two-col, .two-col.equal, .two-col.wide-right, .service-split, .consistency,
+      .screen-stage, .evidence-grid, .rubric, .demo, .security-layers { grid-template-columns: 1fr; }
+      .photo-frame { min-height: 38vh; }
+      .flow { grid-template-columns: 1fr; margin-top: 10px; }
+      .flow::before { display: none; }
+      .arch { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .arch .browser, .arch .gateway, .arch .private-stack { grid-row: auto; }
+      .connector { transform: rotate(90deg); height: 30px; }
+      .postman { grid-template-columns: 1fr; }
+      .postman figure { min-height: 48vh; }
+      .screen.large, .screen.small { height: 42vh; }
+      .slide-no, .footer-mark { display: none; }
+    }
+
+    @media print {
+      html, body { overflow: visible; background: white; }
+      .deck { height: auto; }
+      .slide, .slide.active {
+        position: relative;
+        display: flex;
+        width: 13.333in;
+        height: 7.5in;
+        page-break-after: always;
+        animation: none;
+      }
+      .controls, .progress, .notes-panel { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Presentación RiffPass EP1">
+    <section class="slide cover active" data-title="Portada" data-time="0:30">
+      <img class="cover-photo" src="assets/guitarrista.jpg" alt="Guitarrista en un escenario">
+      <div class="cover-shade"></div>
+      <div class="cover-copy">
+        <div class="eyebrow">DSY1107 · Evaluación Parcial 1</div>
+        <h1>RiffPass</h1>
+        <div class="subtitle">Entradas para conciertos con seguridad cloud</div>
+        <div class="cover-meta">Franco Alarcón · Agustín Aceval · 2026</div>
+      </div>
+      <aside class="notes">30 segundos. Presentar el nombre del caso y al equipo. Explicar que RiffPass adapta la evaluación a un dominio de conciertos autorizado por el profesor.</aside>
+    </section>
+
+    <section class="slide" data-title="Caso de negocio" data-time="1:20">
+      <div class="eyebrow">01 · Caso de negocio</div>
+      <h2>Una entrada segura desde la publicación hasta la puerta</h2>
+      <div class="two-col">
+        <div>
+          <p class="lead">RiffPass administra conciertos y entradas gratuitas con dos responsables claramente separados.</p>
+          <div class="role-band">
+            <div class="role">
+              <h3>Asistente</h3>
+              <p>Consulta conciertos, obtiene una entrada y revisa únicamente sus entradas.</p>
+            </div>
+            <div class="role">
+              <h3>Organizador</h3>
+              <p>Publica conciertos, habilita cupos y valida accesos de sus propios eventos.</p>
+            </div>
+          </div>
+          <ol class="rules">
+            <li><span class="num">01</span><span>Una persona obtiene como máximo una entrada por concierto.</span></li>
+            <li><span class="num">02</span><span>La capacidad se define una vez y el sistema impide la sobreventa.</span></li>
+            <li><span class="num">03</span><span>Una entrada utilizada no puede validarse nuevamente.</span></li>
+          </ol>
+        </div>
+        <div class="photo-frame">
+          <img src="assets/banda-escenario.jpg" alt="Banda en un escenario">
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> RiffPass · EP1</div>
+      <div class="slide-no">02</div>
+      <aside class="notes">1 minuto 20 segundos. Empezar por el problema antes de hablar de tecnología, tal como pidió el profesor. Aclarar que el MVP no incluye pagos ni asientos numerados.</aside>
+    </section>
+
+    <section class="slide" data-title="Flujo del negocio" data-time="1:10">
+      <div class="eyebrow">02 · Diagrama de flujo</div>
+      <h2>Flujo principal del concierto</h2>
+      <div class="flow" role="img" aria-label="Flujo desde la creación del evento hasta la validación de entrada">
+        <div class="flow-step">
+          <div class="disc">01</div>
+          <h3>Publicar</h3>
+          <p>El organizador crea un concierto futuro.</p>
+        </div>
+        <div class="flow-step">
+          <div class="disc">02</div>
+          <h3>Habilitar</h3>
+          <p>Define la capacidad una sola vez.</p>
+        </div>
+        <div class="flow-step">
+          <div class="disc">03</div>
+          <h3>Obtener</h3>
+          <p>El asistente recibe un código único.</p>
+        </div>
+        <div class="flow-step">
+          <div class="disc">04</div>
+          <h3>Validar</h3>
+          <p>El dueño del evento confirma el acceso.</p>
+        </div>
+        <div class="flow-step">
+          <div class="disc">05</div>
+          <h3>Bloquear</h3>
+          <p>Un segundo uso devuelve conflicto 409.</p>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:auto; margin-bottom:42px;">La identidad siempre proviene del token. El navegador nunca decide quién es el propietario o titular.</p>
+      <div class="footer-mark"><span class="note-icon">♪</span> Reglas de negocio</div>
+      <div class="slide-no">03</div>
+      <aside class="notes">1 minuto 10 segundos. Recorrer el flujo de izquierda a derecha. Remarcar que el código de entrada cambia de EMITIDA a UTILIZADA dentro de una transacción.</aside>
+    </section>
+
+    <section class="slide architecture-slide" data-title="Arquitectura cloud" data-time="1:40">
+      <div class="eyebrow">03 · Diagrama de arquitectura</div>
+      <h2>Una única entrada pública hacia servicios privados</h2>
+      <div class="arch" role="img" aria-label="Arquitectura de Vercel, Cognito, API Gateway, VPC Link, ALB, EC2 y RDS">
+        <div class="node orange-edge browser">
+          <strong>React en Vercel</strong>
+          <span>Interfaz pública HTTPS y proxy de rutas /api</span>
+          <strong style="font-size:24px; margin-top:28px; color:#ffa62f;">Cognito</strong>
+          <span>Managed Login, grupos y tokens OAuth con PKCE</span>
+        </div>
+        <div class="connector">→</div>
+        <div class="node purple-edge gateway">
+          <strong>API Gateway REST</strong>
+          <span>Stage test, Cognito Authorizer y scopes por método</span>
+          <strong style="font-size:24px; margin-top:28px; color:#bda6ff;">VPC Link V2</strong>
+          <span>Conexión hacia la red privada</span>
+        </div>
+        <div class="connector">→</div>
+        <div class="private-stack">
+          <div class="node mint-edge">
+            <strong>ALB interno</strong>
+            <span>Rutas separadas hacia Eventos y Entradas</span>
+          </div>
+          <div class="node mint-edge">
+            <strong>EC2 + RDS</strong>
+            <span>Dos procesos Spring Boot y dos bases PostgreSQL</span>
+          </div>
+        </div>
+      </div>
+      <div class="arch-label">VPC privada</div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Infraestructura funcional</div>
+      <div class="slide-no">04</div>
+      <aside class="notes">1 minuto 40 segundos. Explicar que Vercel no reemplaza Gateway. Vercel reenvía la API. API Gateway sigue siendo la puerta protegida. VPC Link y ALB evitan publicar 8081 y 8082 en Internet. EC2 ejecuta ambos JAR de forma independiente.</aside>
+    </section>
+
+    <section class="slide" data-title="Seguridad" data-time="1:35">
+      <div class="eyebrow">04 · Identidad y autorización</div>
+      <h2>El token se valida antes y después de entrar a la VPC</h2>
+      <div class="security-layers">
+        <div class="token-stack">
+          <div class="token">
+            <strong class="orange">ID token</strong>
+            <span>Identidad y email. No autoriza la API.</span>
+          </div>
+          <div class="token">
+            <strong class="mint">Access token</strong>
+            <span>Bearer usado por RiffPass. Contiene scopes y grupos.</span>
+          </div>
+          <div class="token">
+            <strong class="purple">Refresh token</strong>
+            <span>Amplify renueva la sesión cuando corresponde.</span>
+          </div>
+        </div>
+        <div class="check-stack">
+          <h3>Doble validación JWT</h3>
+          <div class="check"><b>✓</b><span>API Gateway valida Cognito y el scope del método.</span></div>
+          <div class="check"><b>✓</b><span>Spring Security verifica firma RS256 con JWKS.</span></div>
+          <div class="check"><b>✓</b><span>Valida issuer, vigencia, <code>token_use</code> y <code>client_id</code>.</span></div>
+          <div class="check"><b>✓</b><span>Convierte grupos en roles y scopes en authorities.</span></div>
+          <div class="check"><b>✓</b><span>El servicio compara el claim <code>sub</code> con el propietario.</span></div>
+        </div>
+        <div class="permission-stack">
+          <div class="formula">
+            Scope
+            <i>+</i>
+            Rol
+            <i>+</i>
+            Propiedad
+            <small>Ocultar botones mejora la experiencia. La seguridad real permanece en el backend.</small>
+          </div>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Cognito + Spring Security</div>
+      <div class="slide-no">05</div>
+      <aside class="notes">1 minuto 35 segundos. Distinguir autenticación de autorización. Explicar que el access token se elige porque contiene los custom scopes. Un asistente con eventos-write todavía falla por rol. Un organizador ajeno falla por propiedad.</aside>
+    </section>
+
+    <section class="slide" data-title="Microservicios" data-time="1:10">
+      <div class="eyebrow">05 · Backend Spring Boot</div>
+      <h2>Dos servicios con datos y responsabilidades propias</h2>
+      <div class="service-split">
+        <article class="service">
+          <div class="port">Puerto 8081 · Base riffpass_eventos</div>
+          <h3>Eventos</h3>
+          <ul>
+            <li>Crea, lista y consulta conciertos.</li>
+            <li>Edita nombre y descripción.</li>
+            <li>Guarda al propietario mediante <code>sub</code>.</li>
+            <li>Protege la edición de eventos ajenos.</li>
+          </ul>
+          <div class="service-footer">Tabla principal: eventos</div>
+        </article>
+        <article class="service">
+          <div class="port">Puerto 8082 · Base riffpass_entradas</div>
+          <h3>Entradas</h3>
+          <ul>
+            <li>Habilita y consulta inventario.</li>
+            <li>Emite una entrada por usuario.</li>
+            <li>Lista únicamente las entradas propias.</li>
+            <li>Valida el código una sola vez.</li>
+          </ul>
+          <div class="service-footer">Tablas principales: inventarios y entradas</div>
+        </article>
+      </div>
+      <p class="lead" style="margin-top:auto; margin-bottom:36px;">Entradas consulta a Eventos por HTTP y reenvía el mismo access token. No existen consultas SQL entre bases.</p>
+      <div class="footer-mark"><span class="note-icon">♪</span> Java 21 · Spring Boot 3.5</div>
+      <div class="slide-no">06</div>
+      <aside class="notes">1 minuto 10 segundos. Mostrar la separación por dominio. Aclarar que riffpass-common es una biblioteca compartida, no un tercer microservicio.</aside>
+    </section>
+
+    <section class="slide" data-title="Consistencia" data-time="1:05">
+      <div class="eyebrow">06 · Reglas críticas</div>
+      <h2>La base de datos protege el último cupo y cada validación</h2>
+      <div class="consistency">
+        <div>
+          <div class="big-number">1</div>
+          <div class="big-caption">entrada máxima por persona y concierto, incluso con solicitudes simultáneas.</div>
+        </div>
+        <div>
+          <div class="guard">
+            <div class="index">01</div>
+            <div><strong>Bloqueo pesimista</strong><p>Serializa las operaciones sobre el inventario.</p></div>
+          </div>
+          <div class="guard">
+            <div class="index">02</div>
+            <div><strong>Transacción única</strong><p>Incrementa emitidas y crea la entrada como una sola operación.</p></div>
+          </div>
+          <div class="guard">
+            <div class="index">03</div>
+            <div><strong>Restricciones SQL</strong><p>Evitan duplicados y que emitidas supere capacidad.</p></div>
+          </div>
+          <div class="guard">
+            <div class="index">04</div>
+            <div><strong>Validación atómica</strong><p>Solo una petición cambia EMITIDA a UTILIZADA.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> PostgreSQL · JPA · Flyway</div>
+      <div class="slide-no">07</div>
+      <aside class="notes">1 minuto 5 segundos. Esta diapositiva demuestra una regla de negocio importante y buenas prácticas. Explicar brevemente PESSIMISTIC_WRITE y la restricción unique por evento y titular.</aside>
+    </section>
+
+    <section class="slide frontend-slide" data-title="Frontend" data-time="1:15">
+      <div class="eyebrow">07 · React y roles reales</div>
+      <h2>La navegación cambia según los claims de Cognito</h2>
+      <div class="screen-stage">
+        <figure class="screen large">
+          <img src="assets/frontend-organizador.png" alt="Frontend RiffPass con rol organizador">
+          <figcaption class="screen-label">Organizador · URL pública</figcaption>
+        </figure>
+        <div>
+          <figure class="screen small">
+            <img src="assets/frontend-asistente.png" alt="Frontend RiffPass con rol asistente">
+            <figcaption class="screen-label">Asistente · URL pública</figcaption>
+          </figure>
+          <div class="screen-copy">
+            <h3>Amplify Auth + Managed Login</h3>
+            <p>Authorization Code con PKCE obtiene un access token con los cuatro scopes personalizados.</p>
+            <p><code>apiFetch</code> adjunta el Bearer token, renueva una vez ante 401 y traduce Problem Details.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> React · Vite · Amplify Auth</div>
+      <div class="slide-no">08</div>
+      <aside class="notes">1 minuto 15 segundos. Señalar que ambas capturas corresponden a usuarios reales. El organizador ve crear y validar. El asistente no ve esas rutas. Aclarar si preguntan que se usa Amplify Auth con Managed Login para conservar los custom scopes.</aside>
+    </section>
+
+    <section class="slide" data-title="Infraestructura real" data-time="1:00">
+      <div class="eyebrow">08 · Evidencia AWS</div>
+      <h2>La infraestructura se desplegó dentro de una VPC</h2>
+      <div class="evidence-grid">
+        <figure class="evidence-main">
+          <img src="assets/aws-ec2.png" alt="Instancia EC2 riffpass-backend en ejecución">
+          <figcaption class="caption">EC2 riffpass-backend · servicios Java activos</figcaption>
+        </figure>
+        <div class="evidence-side">
+          <figure>
+            <img src="assets/aws-alb.png" alt="Application Load Balancer interno">
+            <figcaption class="caption">ALB interno · reglas por ruta</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/aws-vpc-link.png" alt="VPC Link disponible">
+            <figcaption class="caption">VPC Link V2 · estado Available</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> EC2 · ALB · VPC Link V2</div>
+      <div class="slide-no">09</div>
+      <aside class="notes">1 minuto. Explicar que las capturas respaldan la arquitectura. La EC2 ejecuta dos procesos systemd. El ALB es interno. VPC Link permite que Gateway llegue al ALB sin exponer los servicios.</aside>
+    </section>
+
+    <section class="slide" data-title="Pruebas" data-time="1:15">
+      <div class="eyebrow">09 · Evidencia funcional</div>
+      <h2>13 pruebas reales recorren el flujo y sus rechazos</h2>
+      <div class="postman">
+        <figure><img src="assets/postman-01-07.png" alt="Pruebas Postman 1 a 7 aprobadas"></figure>
+        <figure><img src="assets/postman-08-13.png" alt="Pruebas Postman 8 a 13 aprobadas"></figure>
+        <div class="score">13 / 13 PASS</div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> API Gateway · Cognito · EC2 · RDS</div>
+      <div class="slide-no">10</div>
+      <aside class="notes">1 minuto 15 segundos. Mencionar ejemplos, no leer los trece: 401 sin token, 201 al crear, 403 por rol, 200 al validar y 409 al repetir. Estas pruebas pasaron por la infraestructura real.</aside>
+    </section>
+
+    <section class="slide" data-title="Cobertura de la pauta" data-time="1:20">
+      <div class="eyebrow">10 · Pauta de evaluación</div>
+      <h2>Evidencia alineada con los dos indicadores</h2>
+      <div class="rubric">
+        <div>
+          <div class="weight">
+            <div class="pct">60%</div>
+            <div>
+              <h3>React + Amplify + Cognito</h3>
+              <p>Login, logout, rutas protegidas, access token, apiFetch, roles, scopes y consumo real de Gateway.</p>
+            </div>
+          </div>
+          <div class="weight">
+            <div class="pct">40%</div>
+            <div>
+              <h3>Validación JWT en backend</h3>
+              <p>Firma, issuer, vigencia, cliente esperado, roles, propiedad y códigos HTTP adecuados.</p>
+            </div>
+          </div>
+        </div>
+        <div class="coverage">
+          <p><strong>Frontend compilable</strong><br>React modular con vistas funcionales.</p>
+          <p><strong>Varios microservicios</strong><br>Dos JAR Spring Boot desplegados.</p>
+          <p><strong>Persistencia cloud</strong><br>Entidades, repositorios, Flyway y PostgreSQL RDS.</p>
+          <p><strong>Entrega técnica</strong><br>GitHub, archivos .gitignore y documentación reproducible.</p>
+          <div class="risk"><strong>Punto a explicar:</strong> el proyecto usa Amplify Auth con Cognito Managed Login. No renderiza el widget visual <code>&lt;Authenticator&gt;</code>.</div>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Cobertura EP1</div>
+      <div class="slide-no">11</div>
+      <aside class="notes">1 minuto 20 segundos. Relacionar evidencia con la pauta. Ser transparente sobre Authenticator. La implementación usa Amplify Auth y cumple el flujo, los tokens y apiFetch, pero el componente visual literal no se renderiza. Evitar afirmar algo distinto.</aside>
+    </section>
+
+    <section class="slide" data-title="Demostración" data-time="1:25">
+      <div class="eyebrow">11 · Demostración en vivo</div>
+      <h2>Un recorrido corto prueba el sistema completo</h2>
+      <div class="demo">
+        <ol class="demo-path">
+          <li><span>Entrar como ORGANIZADOR y publicar un concierto futuro.</span></li>
+          <li><span>Habilitar una capacidad pequeña para visualizar el inventario.</span></li>
+          <li><span>Cerrar sesión y entrar como ASISTENTE.</span></li>
+          <li><span>Obtener la entrada y copiar su código.</span></li>
+          <li><span>Volver como ORGANIZADOR y validar el código.</span></li>
+          <li><span>Repetir la validación para demostrar el conflicto 409.</span></li>
+        </ol>
+        <div class="timebox">
+          <div class="minutes">15</div>
+          <h3>minutos de exposición</h3>
+          <p>La ronda de preguntas conserva cinco minutos dentro del máximo total de 20.</p>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Plan de presentación</div>
+      <div class="slide-no">12</div>
+      <aside class="notes">1 minuto 25 segundos incluyendo la transición a la demo. Antes de presentar, iniciar Learner Lab, comprobar EC2 y abrir la URL pública en incógnito. Si el tiempo se reduce, mostrar catálogo, una validación y el 409.</aside>
+    </section>
+
+    <section class="slide closing" data-title="Cierre" data-time="0:35">
+      <div class="eyebrow">RiffPass · EP1 DSY1107</div>
+      <h2>Flujo completo, seguridad en profundidad y datos persistentes</h2>
+      <div class="summary">
+        <span>2 microservicios</span>
+        <span>2 roles</span>
+        <span>4 scopes</span>
+        <span>23 pruebas Java</span>
+        <span>13/13 Postman</span>
+      </div>
+      <div class="url">https://riffpass-ep1.vercel.app/</div>
+      <aside class="notes">35 segundos. Cerrar con los resultados comprobables y abrir la ronda de preguntas.</aside>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="Controles de presentación">
+    <button id="prev" title="Anterior" aria-label="Diapositiva anterior">←</button>
+    <div class="counter" id="counter">1 / 13</div>
+    <button id="next" title="Siguiente" aria-label="Diapositiva siguiente">→</button>
+    <button id="notesBtn" title="Notas del expositor (P)" aria-label="Mostrar notas">P</button>
+    <button id="fullBtn" title="Pantalla completa (F)" aria-label="Pantalla completa">F</button>
+  </div>
+  <div class="progress" id="progress"></div>
+  <div class="notes-panel" id="notesPanel"></div>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    const notesPanel = document.getElementById('notesPanel');
+    let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.slice(1)) - 1 || 0));
+
+    function show(nextIndex) {
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      location.hash = String(index + 1);
+      const note = slides[index].querySelector('.notes');
+      notesPanel.innerHTML = note ? `<strong>${slides[index].dataset.title} · ${slides[index].dataset.time}</strong><br>${note.innerHTML}` : '';
+      document.title = `${index + 1}/${slides.length} · ${slides[index].dataset.title} · RiffPass`;
+    }
+
+    function toggleNotes() { notesPanel.classList.toggle('open'); }
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+
+    document.getElementById('prev').addEventListener('click', () => show(index - 1));
+    document.getElementById('next').addEventListener('click', () => show(index + 1));
+    document.getElementById('notesBtn').addEventListener('click', toggleNotes);
+    document.getElementById('fullBtn').addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('keydown', (event) => {
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
+        event.preventDefault();
+        show(index + 1);
+      }
+      if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+        event.preventDefault();
+        show(index - 1);
+      }
+      if (event.key === 'Home') show(0);
+      if (event.key === 'End') show(slides.length - 1);
+      if (event.key.toLowerCase() === 'p') toggleNotes();
+      if (event.key.toLowerCase() === 'f') toggleFullscreen();
+      if (event.key === 'Escape') notesPanel.classList.remove('open');
+    });
+
+    let touchStart = 0;
+    document.addEventListener('touchstart', (event) => { touchStart = event.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', (event) => {
+      const delta = event.changedTouches[0].screenX - touchStart;
+      if (Math.abs(delta) > 60) show(index + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+
+    show(index);
+  </script>
+</body>
+</html>
