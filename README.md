@@ -20,7 +20,7 @@ La carpeta definitiva del proyecto es `C:\Users\franc\Proyectos\RiffPass`; el no
 - Infraestructura desplegada y verificada en AWS: API Gateway, Cognito, VPC Link V2, ALB interno, EC2 y RDS.
 - Frontend React desplegado en Vercel y probado con usuarios reales `ORGANIZADOR` y `ASISTENTE`.
 - Colección Postman aprobada con 13/13 casos sobre la infraestructura real.
-- EP2: mensajería asíncrona con un tópico SNS y tres colas SQS con DLQ (fanout y filtros), consumidor con dos réplicas y microservicio administrador. Implementada y probada localmente; pendiente de desplegar en AWS.
+- EP2: mensajería asíncrona con un tópico SNS y tres colas SQS con DLQ (fanout y filtros), consumidor con dos réplicas y microservicio administrador. Desplegada y verificada en AWS el 19/10/2026.
 
 ## Continuar con el backend
 

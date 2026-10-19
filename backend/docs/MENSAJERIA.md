@@ -271,4 +271,10 @@ Para dos réplicas locales, usa `PORT=8085 INSTANCIA=procesamiento-2` en otra te
 ## Estado de verificación
 
 - **Verificado localmente:** los módulos compilan y las pruebas pasan (`mvnw test`). Esto incluye el ACK, el duplicado, el reintento con rollback, el último intento hacia la redrive, el envío no recuperable a la DLQ, la simulación por ruta, la Redrive Policy y el filtro generados por el administrador, la protección de recursos declarados y la seguridad del administrador.
-- **Pendiente de verificar en AWS:** la topología real, los permisos de `LabRole`, las rutas del ALB y de Gateway, y la demostración completa de la sección 11.
+- **Verificado en AWS (19/10/2026, us-east-1):**
+  - **Topología:** el administrador creó el tópico, 3 colas, 3 DLQ, 3 suscripciones *Confirmed* con raw delivery y filtro, y 3 alarmas. Las 6 colas son Standard y están cifradas con SSE-SQS.
+  - **Integración:** crear un concierto desde el frontend llegó a notificaciones y auditoría. Obtener una entrada llegó a tickets, notificaciones y auditoría con el mismo `eventoId` (fanout). Validar llegó solo a auditoría.
+  - **Dos réplicas:** los mensajes se repartieron entre `procesamiento-1` y `procesamiento-2`. Con `procesamiento@1` detenido, la réplica 2 procesó los 4 conciertos siguientes sin pérdidas. Tras reiniciar el laboratorio, los 5 servicios arrancaron solos.
+  - **Errores:** un mensaje `PERMANENTE@TICKETS` publicado desde SNS registró `REINTENTO` 1/3 (5 s) y 2/3 (10 s), y luego `NO ENTREGADO` 3/3 `via=RedrivePolicy`, con id, intento y causa. Notificaciones y auditoría lo procesaron normalmente. Quedó 1 mensaje en `riffpass-tickets-dlq` y la alarma pasó a *In alarm* en unos 2,5 min.
+  - **Administrador:** se probaron E14–E24 (consumidores, pausar y reanudar, crear y eliminar cola, tópico y suscripción, cambiar filtro). E11 mostró el mensaje con el mismo `sqsId`. E12 lo reprocesó: `PROCESADO` en tickets con el mismo `eventoId` y la alarma volvió a *OK*. E13 purgó la DLQ y respondió 409 al repetirlo antes de 60 s.
+  - **Sin evidencia registrada:** el caso `NO_RECUPERABLE` en AWS (sí cubierto por las pruebas automáticas) y la notificación por correo de la alarma (el tópico `riffpass-alertas` no tiene suscriptores).

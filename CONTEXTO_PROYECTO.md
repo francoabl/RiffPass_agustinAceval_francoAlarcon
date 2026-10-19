@@ -348,16 +348,16 @@ Fuente: `C:/Users/franc/Downloads/Evaluacion_Parcial_2_Encargo_y_Presentacion_Re
   - El administrador requiere el grupo Cognito `ADMINISTRADOR` y el scope nuevo `resource-server-riffpass/mensajeria-admin`.
   - El consumidor usa la base RDS `riffpass_procesamiento`, se ejecuta en dos réplicas (8083 y 8085) y el administrador usa el puerto 8084.
   - La EC2 debe usar `LabInstanceProfile` y conviene subirla a `t3.medium`.
-- **Estado:**
-  - Implementado y probado localmente (`mvnw test` sin fallas).
-  - No está desplegado en AWS ni verificado con recursos reales.
+- **Estado (19/10/2026):**
+  - Desplegado y verificado en AWS real: topología, fanout y filtros desde el frontend, dos réplicas con una detenida, reintentos y DLQ con logs, alarma *In alarm* → *OK*, y operaciones del administrador (incluidos ver, reprocesar y purgar la DLQ). El detalle está en `backend/docs/MENSAJERIA.md`, sección *Estado de verificación*.
+  - Recursos creados:
+    - Cognito: scope `mensajeria-admin` y grupo `ADMINISTRADOR`.
+    - RDS: base `riffpass_procesamiento`.
+    - EC2: tipo `t3.medium` con `LabInstanceProfile`, y los 5 servicios con systemd.
+    - Target group `riffpass-admin-tg` (8084), regla ALB con prioridad 5 y recurso Gateway `/api/admin/{proxy+}` desplegado en `test`.
+  - La IP pública de la EC2 cambia en cada arranque del laboratorio. La clave SSH está fuera del repositorio.
   - No se modificó el frontend.
 - **Pendientes:**
-  - Cognito: scope y grupo.
-  - RDS: base nueva.
-  - EC2: rol y tipo de instancia.
-  - ALB: regla `/test/api/admin/*`.
-  - Gateway: recurso `/api/admin/{proxy+}` y redeploy.
-  - Ensayar el guion de `backend/docs/MENSAJERIA.md`.
-  - Pendientes formales: nombre del repositorio, autores de commits e invitación al docente.
-  - Pendiente de EP1: el componente `<Authenticator>`.
+  - Ensayar el guion de la presentación (sección 11 de `backend/docs/MENSAJERIA.md`).
+  - Opcional: demostrar `NO_RECUPERABLE` en AWS y suscribir un correo a `riffpass-alertas`.
+  - El usuario gestiona por su cuenta los aspectos formales de entrega y los pendientes de EP1.
