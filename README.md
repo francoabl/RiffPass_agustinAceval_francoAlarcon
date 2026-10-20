@@ -35,6 +35,7 @@ Documentos principales:
 
 - [Guía de estudio del proyecto completo](docs/GUIA_ESTUDIO_RIFFPASS.md)
 - [Presentación HTML de la EP1](presentacion/riffpass-ep1.html)
+- [Presentación de la EP2 publicada](https://riffpassev2.netlify.app/#1) ([archivo](presentacion/riffpass-ep2.html))
 - [Inicio y pruebas del backend](backend/README.md)
 - [Guía de AWS paso a paso](backend/docs/AWS_PASO_A_PASO.md)
 - [Contrato de la API](backend/docs/API.md)
