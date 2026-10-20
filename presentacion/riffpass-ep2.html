@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>RiffPass · Presentación EP2 DSY1107</title>
+  <style>
+    @font-face { font-family: "Big Shoulders"; src: url("assets/big-shoulders-900.woff2") format("woff2"); font-weight: 900; }
+    @font-face { font-family: "Archivo"; src: url("assets/archivo-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Archivo"; src: url("assets/archivo-600.woff2") format("woff2"); font-weight: 600; }
+
+    :root {
+      --ink: #080b23;
+      --navy: #0e1538;
+      --cream: #f7f1e5;
+      --orange: #ffa62f;
+      --purple: #8f5cff;
+      --lilac: #bda6ff;
+      --mint: #65deb1;
+      --red: #ff6b57;
+      --muted: #aab1cf;
+      --line: rgba(255,255,255,.16);
+      --shadow: 0 30px 80px rgba(0,0,0,.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #03050f; }
+    body { font-family: "Archivo", Arial, sans-serif; color: var(--cream); }
+    button { font: inherit; }
+    code { font-family: Consolas, "Cascadia Mono", monospace; font-size: .9em; color: #ffd28f; }
+
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide {
+      position: absolute; inset: 0; display: none; width: 100vw; height: 100vh;
+      padding: clamp(30px, 4.2vw, 70px) clamp(36px, 5.6vw, 96px) clamp(64px, 8vh, 96px);
+      overflow: hidden; isolation: isolate;
+      background:
+        radial-gradient(circle at 88% 8%, rgba(143,92,255,.20), transparent 32%),
+        radial-gradient(circle at 8% 92%, rgba(255,166,47,.16), transparent 28%),
+        linear-gradient(145deg, #080b23 0%, #10183c 54%, #0a0e29 100%);
+    }
+    .slide.active { display: flex; flex-direction: column; animation: reveal .42s ease both; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(12px) scale(.995); } to { opacity: 1; transform: none; } }
+    .slide::before {
+      content: ""; position: absolute; z-index: -1; width: 560px; height: 560px;
+      border: 2px solid rgba(255,166,47,.12); border-radius: 48% 52% 70% 30% / 45% 38% 62% 55%;
+      right: -270px; bottom: -300px; transform: rotate(-12deg);
+    }
+
+    .eyebrow { color: var(--orange); font-size: clamp(12px, 1.05vw, 17px); font-weight: 600; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 10px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Big Shoulders", Impact, sans-serif; text-transform: uppercase; letter-spacing: .015em; line-height: .93; }
+    h1 { font-size: clamp(74px, 10vw, 164px); margin-bottom: 18px; }
+    h2 { font-size: clamp(40px, 4.6vw, 74px); margin-bottom: clamp(16px, 2.6vh, 34px); max-width: 1300px; }
+    h3 { font-size: clamp(22px, 2.1vw, 36px); margin-bottom: 10px; }
+    p, li, td, th { font-size: clamp(15px, 1.3vw, 21px); line-height: 1.42; }
+    .lead { font-size: clamp(18px, 1.75vw, 28px); color: #d8dcef; max-width: 980px; }
+    .muted { color: var(--muted); }
+    .orange { color: var(--orange); }
+    .mint { color: var(--mint); }
+    .purple { color: var(--lilac); }
+    .red { color: var(--red); }
+
+    .slide-no { position: absolute; right: clamp(30px, 4vw, 70px); bottom: clamp(20px, 3vh, 40px); color: rgba(255,255,255,.35); font: 900 clamp(28px, 2.8vw, 48px)/1 "Big Shoulders"; letter-spacing: .06em; }
+    .footer-mark { position: absolute; left: clamp(30px, 4vw, 70px); bottom: clamp(22px, 3.2vh, 44px); display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.55); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .note-icon { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; color: var(--ink); background: var(--orange); font-weight: 900; }
+
+    /* Portada y cierre */
+    .cover { padding: 0; justify-content: flex-end; background: #070817; }
+    .cover::before { display: none; }
+    .cover-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 61% center; filter: saturate(.72) contrast(1.12) brightness(.6); z-index: -2; }
+    .cover-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(5,5,20,.98) 0%, rgba(5,5,20,.82) 44%, rgba(5,5,20,.2) 78%), linear-gradient(0deg, rgba(5,5,20,.88) 0%, transparent 45%); }
+    .cover-copy { width: min(1000px, 80vw); margin: 0 0 clamp(70px, 10vh, 130px) clamp(45px, 7vw, 120px); }
+    .cover .subtitle { color: var(--orange); font-size: clamp(18px, 1.9vw, 30px); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+    .cover-meta { margin-top: 30px; color: #d7d9e7; font-size: clamp(14px, 1.2vw, 19px); }
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .pill { border: 1px solid rgba(255,166,47,.5); padding: 7px 14px; font-size: clamp(12px, 1vw, 16px); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; background: rgba(8,11,35,.6); }
+
+    .closing { justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(6,7,23,.62), rgba(6,7,23,.92)), url("assets/banda-escenario.jpg") center 38% / cover; }
+    .closing::before { display: none; }
+    .closing h2 { font-size: clamp(60px, 8vw, 128px); max-width: 1150px; margin-bottom: 26px; }
+    .closing .summary { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px 40px; color: #e7e7ef; font-size: clamp(16px, 1.35vw, 22px); font-weight: 600; }
+    .closing .summary b { color: var(--orange); font: 900 1.6em/1 "Big Shoulders"; margin-right: 6px; }
+
+    /* Rejillas */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 48px); flex: 1; min-height: 0; }
+    .grid-2.l { grid-template-columns: 1.25fr .75fr; }
+    .grid-2.r { grid-template-columns: .8fr 1.2fr; }
+    .stack { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+
+    /* Capturas */
+    .shot { margin: 0; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.2); background: #fff; box-shadow: var(--shadow); cursor: zoom-in; min-height: 0; flex: 0 0 auto; align-self: start; width: 100%; }
+    .shot img { width: 100%; height: auto; max-height: 60vh; object-fit: contain; object-position: center top; display: block; }
+    .stack > .shot + .shot img, .half img { max-height: 25vh; }
+    .shot.dark { background: #1e1e1e; }
+    .shot.cover-fit img { object-fit: cover; object-position: left top; height: 26vh; }
+    .shot figcaption { position: static; display: block; padding: 7px 13px; color: var(--ink); background: var(--orange); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .shot.purple-cap figcaption { background: #c2b2ff; }
+    .shot.mint-cap figcaption { background: var(--mint); }
+    .shot.red-cap figcaption { background: var(--red); }
+
+    /* Terminal legible */
+    .term { margin: 0; background: #05070f; border: 1px solid rgba(255,255,255,.18); border-top: 26px solid #1a1f3a; position: relative; padding: 14px 18px; font: clamp(11px, .92vw, 15px)/1.55 Consolas, "Cascadia Mono", monospace; color: #c9cde0; overflow: hidden; box-shadow: var(--shadow); }
+    .term::before { content: "ec2-user@riffpass-backend · journalctl"; position: absolute; top: -21px; left: 14px; font: 600 11px Archivo, sans-serif; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+    .term div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .t-ok { color: var(--mint); font-weight: 700; }
+    .t-warn { color: var(--orange); font-weight: 700; }
+    .t-err { color: var(--red); font-weight: 700; }
+    .t-dim { color: #6f7699; }
+    .t-key { color: var(--lilac); }
+
+    /* Tablas */
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; color: var(--orange); font-size: clamp(12px, 1vw, 16px); letter-spacing: .1em; text-transform: uppercase; padding: 8px 10px; border-bottom: 2px solid rgba(255,166,47,.5); }
+    td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: clamp(13px, 1.12vw, 18px); }
+    td:first-child { font-weight: 600; }
+    .compact td { padding: 6px 10px; }
+
+    /* Tarjetas de cola */
+    .queues { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 30px); margin-top: 8px; }
+    .queue { border-top: 5px solid var(--orange); background: rgba(14,21,56,.6); padding: 20px 22px 18px; }
+    .queue:nth-child(2) { border-color: var(--purple); }
+    .queue:nth-child(3) { border-color: var(--mint); }
+    .queue .qname { font: 600 13px/1.2 Consolas, monospace; color: var(--muted); letter-spacing: .04em; }
+    .queue h3 { margin: 10px 0 8px; }
+    .queue p { color: #cdd1e7; font-size: clamp(14px, 1.15vw, 19px); margin-bottom: 12px; }
+    .tag { display: inline-block; padding: 4px 9px; margin: 2px 4px 2px 0; font: 600 12px/1.2 Consolas, monospace; color: var(--ink); background: var(--cream); }
+    .tag.all { background: var(--mint); }
+
+    /* Flujo de errores */
+    .paths { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.6vw, 24px); align-items: stretch; }
+    .path { background: rgba(14,21,56,.7); border: 1px solid var(--line); border-top: 5px solid var(--mint); padding: 20px 20px 16px; display: flex; flex-direction: column; }
+    .path.warn { border-top-color: var(--orange); }
+    .path.err { border-top-color: var(--red); }
+    .path.dup { border-top-color: var(--lilac); }
+    .path .when { font: 900 clamp(24px, 2.2vw, 36px)/1 "Big Shoulders"; text-transform: uppercase; margin-bottom: 12px; }
+    .path p { color: #cdd1e7; font-size: clamp(13px, 1.1vw, 18px); margin-bottom: 10px; }
+    .path .act { margin-top: auto; padding-top: 12px; padding-bottom: 2px; border-top: 1px solid var(--line); font-weight: 600; font-size: clamp(13px, 1.1vw, 18px); }
+
+    /* Código */
+    .code { margin: 0; align-self: start; background: #05070f; border: 1px solid rgba(255,255,255,.18); border-left: 5px solid var(--orange); padding: 16px 20px; font: clamp(11px, .95vw, 15px)/1.5 Consolas, "Cascadia Mono", monospace; color: #d6d9ea; white-space: pre; overflow: hidden; }
+    .code .k { color: var(--lilac); }
+    .code .v { color: var(--mint); }
+    .code .c { color: #6f7699; }
+    .points { list-style: none; padding: 0; margin: 0; }
+    .points li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+    .points li b { color: var(--orange); font: 900 24px/1 "Big Shoulders"; }
+    .points li span { font-size: clamp(14px, 1.2vw, 19px); }
+
+    /* Diagrama */
+    .diagram { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+    .diagram svg { width: 100%; height: 100%; max-height: 66vh; }
+
+    /* Métricas */
+    .big { font: 900 clamp(70px, 9vw, 150px)/.85 "Big Shoulders"; color: var(--orange); }
+    .stamp { display: inline-block; padding: 10px 18px; color: var(--ink); background: var(--mint); font: 900 clamp(26px, 2.6vw, 42px)/1 "Big Shoulders"; text-transform: uppercase; transform: rotate(-3deg); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+    .stamp.red-bg { background: var(--red); }
+
+    .demo-path { counter-reset: demo; list-style: none; margin: 0; padding: 0; }
+    .demo-path li { counter-increment: demo; display: grid; grid-template-columns: 44px 1fr; gap: 12px; margin: 8px 0; align-items: baseline; }
+    .demo-path li::before { content: counter(demo, decimal-leading-zero); color: var(--orange); font: 900 26px/1 "Big Shoulders"; }
+
+    /* Controles */
+    .controls { position: fixed; z-index: 100; right: 18px; top: 16px; display: flex; align-items: center; gap: 8px; opacity: .32; transition: opacity .2s ease; }
+    .controls:hover { opacity: 1; }
+    .controls button { border: 1px solid rgba(255,255,255,.22); color: white; background: rgba(8,11,35,.76); width: 36px; height: 36px; cursor: pointer; }
+    .controls .counter { min-width: 64px; text-align: center; font-size: 12px; color: white; background: rgba(8,11,35,.76); padding: 10px; }
+    .progress { position: fixed; z-index: 101; left: 0; bottom: 0; height: 4px; width: 0; background: linear-gradient(90deg, var(--orange), var(--purple)); transition: width .3s ease; }
+    .notes-panel { display: none; position: fixed; z-index: 120; left: 30px; right: 30px; bottom: 30px; max-height: 32vh; overflow: auto; padding: 20px 24px; color: #15172c; background: rgba(255,249,237,.97); border-top: 5px solid var(--orange); box-shadow: var(--shadow); font-size: 16px; line-height: 1.5; }
+    .notes-panel.open { display: block; }
+    .notes { display: none; }
+    .lightbox { display: none; position: fixed; z-index: 200; inset: 0; background: rgba(3,5,15,.94); padding: 3vh 3vw; cursor: zoom-out; }
+    .lightbox.open { display: flex; align-items: center; justify-content: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; box-shadow: var(--shadow); background: #fff; }
+
+    @media (max-width: 900px) {
+      .slide { padding: 46px 22px 70px; overflow-y: auto; }
+      .grid-2, .grid-2.l, .grid-2.r, .queues, .paths { grid-template-columns: 1fr; }
+      .shot { min-height: 34vh; flex: none; }
+      .slide-no, .footer-mark { display: none; }
+    }
+    @media print {
+      html, body { overflow: visible; background: white; }
+      .slide, .slide.active { position: relative; display: flex; width: 13.333in; height: 7.5in; page-break-after: always; animation: none; }
+      .controls, .progress, .notes-panel, .lightbox { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="Presentación RiffPass EP2">
+
+    <!-- 01 -->
+    <section class="slide cover active" data-title="Portada" data-time="0:20">
+      <img class="cover-photo" src="assets/guitarrista.jpg" alt="Guitarrista en un escenario">
+      <div class="cover-shade"></div>
+      <div class="cover-copy">
+        <div class="eyebrow">DSY1107 · Evaluación Parcial 2</div>
+        <h1>RiffPass</h1>
+        <div class="subtitle">Mensajería asíncrona con Amazon SNS y SQS</div>
+        <div class="pills">
+          <span class="pill">1 tópico</span><span class="pill">3 colas + 3 DLQ</span><span class="pill">Fanout + filtros</span><span class="pill">2 réplicas</span><span class="pill">Administrador REST</span>
+        </div>
+        <div class="cover-meta">Franco Alarcón · Agustín Aceval · 2026</div>
+      </div>
+      <aside class="notes">20 segundos. Presentar que esta etapa escala el sistema del Parcial 1: misma plataforma de entradas, ahora con una capa de mensajería desacoplada que se demostró funcionando en AWS real.</aside>
+    </section>
+
+    <!-- 02 -->
+    <section class="slide" data-title="Por qué mensajería" data-time="0:40">
+      <div class="eyebrow">01 · Problema</div>
+      <h2>Obtener una entrada no debe esperar al ticket, al correo ni a la auditoría</h2>
+      <p class="lead">El backend confirma la entrada y publica <b class="orange">un hecho de negocio</b>. Cada tarea secundaria la hace su propio consumidor, a su ritmo y con sus propios reintentos.</p>
+      <div class="queues">
+        <article class="queue">
+          <div class="qname">riffpass-tickets</div>
+          <h3>Tickets</h3>
+          <p>Genera el comprobante digital de cada entrada emitida.</p>
+          <span class="tag">ENTRADA_EMITIDA</span>
+        </article>
+        <article class="queue">
+          <div class="qname">riffpass-notificaciones</div>
+          <h3>Notificaciones</h3>
+          <p>Avisa al titular y anuncia conciertos nuevos.</p>
+          <span class="tag">ENTRADA_EMITIDA</span><span class="tag">EVENTO_CREADO</span>
+        </article>
+        <article class="queue">
+          <div class="qname">riffpass-auditoria</div>
+          <h3>Auditoría</h3>
+          <p>Bitácora y estadística de emitidas y validadas por concierto.</p>
+          <span class="tag all">TODOS LOS TIPOS</span>
+        </article>
+      </div>
+      <p class="muted" style="margin-top:auto; margin-bottom:0;">Tres colas porque tienen criticidad y ritmo distintos: el ticket es parte del producto, el aviso pierde valor con el tiempo y la auditoría no puede perderse.</p>
+      <div class="footer-mark"><span class="note-icon">♪</span> Caso RiffPass</div>
+      <div class="slide-no">02</div>
+      <aside class="notes">40 segundos. Justificar la separación de las tres colas: funcionalidades distintas, parámetros distintos. Si el proveedor de correo falla, la generación de tickets no se detiene.</aside>
+    </section>
+
+    <!-- 03 -->
+    <section class="slide" data-title="Arquitectura" data-time="0:45">
+      <div class="eyebrow">02 · Diagrama de arquitectura</div>
+      <h2>Productores, tópico, colas y consumidores desacoplados</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 1244 480" role="img" aria-label="Arquitectura de mensajería RiffPass">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffa62f"/></marker>
+            <marker id="arp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bda6ff"/></marker>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ff6b57"/></marker>
+          </defs>
+          <style>
+            .bx { fill: #0e1538; stroke: rgba(255,255,255,.28); stroke-width: 1.5; }
+            .bo { stroke: #ffa62f; stroke-width: 2; } .bp { stroke: #8f5cff; stroke-width: 2; } .bm { stroke: #65deb1; stroke-width: 2; } .br { stroke: #ff6b57; stroke-width: 2; }
+            .t1 { font: 900 22px "Big Shoulders", Impact; fill: #f7f1e5; text-transform: uppercase; letter-spacing: .5px; }
+            .t2 { font: 400 13px Archivo, Arial; fill: #aab1cf; }
+            .t3 { font: 600 12px Consolas, monospace; fill: #ffd28f; }
+            .ln { stroke: #ffa62f; stroke-width: 2; fill: none; }
+            .lp { stroke: #bda6ff; stroke-width: 1.6; fill: none; stroke-dasharray: 6 5; }
+            .lr { stroke: #ff6b57; stroke-width: 1.6; fill: none; stroke-dasharray: 4 4; }
+          </style>
+          <!-- Clientes -->
+          <rect class="bx bo" x="10" y="40" width="170" height="92"/><text class="t1" x="24" y="72">Frontend</text><text class="t2" x="24" y="94">React · Vercel</text><text class="t2" x="24" y="114">Cognito: JWT + scopes</text>
+          <rect class="bx bp" x="10" y="318" width="170" height="92"/><text class="t1" x="24" y="350">Postman</text><text class="t2" x="24" y="372">Grupo ADMINISTRADOR</text><text class="t2" x="24" y="392">scope mensajeria-admin</text>
+          <!-- Gateway -->
+          <rect class="bx bo" x="225" y="40" width="160" height="370"/><text class="t1" x="240" y="72">API Gateway</text><text class="t2" x="240" y="94">Cognito Authorizer</text><text class="t2" x="240" y="114">VPC Link V2 → ALB</text><text class="t3" x="240" y="380">/api/admin/{proxy+}</text>
+          <path class="ln" d="M180,86 H222" marker-end="url(#ar)"/><path class="lp" d="M180,364 H222" marker-end="url(#arp)"/>
+          <!-- Microservicios -->
+          <rect class="bx bo" x="430" y="40" width="175" height="72"/><text class="t1" x="444" y="70">Eventos</text><text class="t2" x="444" y="92">EVENTO_CREADO</text>
+          <rect class="bx bo" x="430" y="130" width="175" height="72"/><text class="t1" x="444" y="160">Entradas</text><text class="t2" x="444" y="182">EMITIDA · VALIDADA</text>
+          <rect class="bx bp" x="430" y="318" width="175" height="92"/><text class="t1" x="444" y="348">Administrador</text><text class="t2" x="444" y="370">ColaAdminService</text><text class="t2" x="444" y="390">:8084</text>
+          <path class="ln" d="M385,76 H427" marker-end="url(#ar)"/><path class="ln" d="M385,166 H427" marker-end="url(#ar)"/><path class="lp" d="M385,364 H427" marker-end="url(#arp)"/>
+          <!-- SNS -->
+          <rect class="bx bo" x="650" y="40" width="150" height="162"/><text class="t1" x="664" y="72">SNS</text><text class="t3" x="664" y="94">riffpass-eventos</text><text class="t2" x="664" y="120">atributo "tipo"</text><text class="t2" x="664" y="140">raw delivery</text><text class="t2" x="664" y="160">filter policy</text>
+          <path class="ln" d="M605,76 H647" marker-end="url(#ar)"/><path class="ln" d="M605,166 H647" marker-end="url(#ar)"/>
+          <!-- Colas -->
+          <rect class="bx bo" x="850" y="20" width="170" height="54"/><text class="t3" x="862" y="42">riffpass-tickets</text><text class="t2" x="862" y="62">filtro: EMITIDA</text>
+          <rect class="bx bp" x="850" y="100" width="170" height="54"/><text class="t3" x="862" y="122">…-notificaciones</text><text class="t2" x="862" y="142">filtro: EMITIDA, CREADO</text>
+          <rect class="bx bm" x="850" y="180" width="170" height="54"/><text class="t3" x="862" y="202">riffpass-auditoria</text><text class="t2" x="862" y="222">sin filtro (todo)</text>
+          <path class="ln" d="M800,90 L847,47" marker-end="url(#ar)"/><path class="ln" d="M800,121 H847" marker-end="url(#ar)"/><path class="ln" d="M800,160 L847,205" marker-end="url(#ar)"/>
+          <!-- DLQ -->
+          <rect class="bx br" x="850" y="262" width="170" height="74"/><text class="t1" x="862" y="290" style="fill:#ff6b57">3 DLQ</text><text class="t2" x="862" y="310">Redrive Policy</text><text class="t2" x="862" y="326">maxReceiveCount 3 / 5 / 5</text>
+          <path class="lr" d="M1020,47 C1050,47 1050,280 1022,286" marker-end="url(#arr)"/>
+          <rect class="bx br" x="850" y="362" width="170" height="54"/><text class="t1" x="862" y="388">CloudWatch</text><text class="t2" x="862" y="406">alarma DLQ ≥ 1</text>
+          <path class="lr" d="M935,336 V359" marker-end="url(#arr)"/>
+          <!-- Consumidores -->
+          <rect class="bx bm" x="1060" y="20" width="172" height="214"/><text class="t3" x="1072" y="40">@SqsListener ×3</text>
+          <rect class="bx bm" x="1072" y="52" width="148" height="76"/><text class="t1" x="1084" y="82">Réplica 1</text><text class="t2" x="1084" y="104">procesamiento :8083</text>
+          <rect class="bx bm" x="1072" y="144" width="148" height="76"/><text class="t1" x="1084" y="174">Réplica 2</text><text class="t2" x="1084" y="196">procesamiento :8085</text>
+          <rect class="bx" x="1060" y="262" width="172" height="74"/><text class="t1" x="1074" y="292">RDS</text><text class="t2" x="1074" y="314">idempotencia · tickets</text>
+          <path class="ln" d="M1020,47 H1057" marker-end="url(#ar)"/><path class="ln" d="M1020,127 H1057" marker-end="url(#ar)"/><path class="ln" d="M1020,207 H1057" marker-end="url(#ar)"/>
+          <path class="ln" d="M1146,234 V259" marker-end="url(#ar)"/>
+          <!-- Admin opera -->
+          <path class="lp" d="M605,364 H830 V240" marker-end="url(#arp)"/>
+          <path class="lp" d="M605,390 H847" marker-end="url(#arp)"/>
+          <path class="lp" d="M518,410 V452 H1238 V128 H1235" marker-end="url(#arp)"/>
+          <text class="t2" x="626" y="352" style="fill:#bda6ff">crea · estado · reprocesa · purga</text>
+          <text class="t2" x="1236" y="472" text-anchor="end" style="fill:#bda6ff">pausa / reanuda en ambas réplicas</text>
+        </svg>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> EC2 t3.medium · 5 servicios systemd</div>
+      <div class="slide-no">03</div>
+      <aside class="notes">45 segundos. Recorrer de izquierda a derecha: el JWT pasa por Gateway, Eventos y Entradas publican en un único tópico, SNS reparte según el atributo tipo, cada cola tiene su DLQ y su alarma, y dos réplicas del consumidor leen las mismas colas. El administrador (morado) opera la topología por API REST. Todo corre en la misma VPC del Parcial 1; los puertos 8083/8085 no se exponen.</aside>
+    </section>
+
+    <!-- 04 -->
+    <section class="slide" data-title="SNS en AWS" data-time="0:45">
+      <div class="eyebrow">03 · Consola AWS · SNS</div>
+      <h2>Un tópico estándar con tres suscripciones confirmadas</h2>
+      <div class="grid-2 r">
+        <div class="stack">
+          <figure class="shot purple-cap"><img src="assets/ep2/sns-topico.png" alt="Tópico riffpass-eventos con 3 suscripciones SQS confirmadas"><figcaption>riffpass-eventos · 3 SQS confirmed</figcaption></figure>
+          <table class="compact">
+            <tr><th>Parámetro</th><th>Por qué</th></tr>
+            <tr><td>Raw delivery</td><td>La cola recibe el JSON original, sin el sobre de SNS; <code>tipo</code> llega como atributo SQS.</td></tr>
+            <tr><td>Filter policy</td><td>Evalúa el atributo <code>tipo</code>: cada cola recibe solo lo que procesa.</td></tr>
+          </table>
+        </div>
+        <div class="grid-2" style="gap:16px;">
+          <figure class="shot"><img src="assets/ep2/sub-tickets.png" alt="Suscripción a riffpass-tickets con filtro ENTRADA_EMITIDA"><figcaption>Tickets · solo EMITIDA</figcaption></figure>
+          <figure class="shot"><img src="assets/ep2/sub-notificaciones.png" alt="Suscripción a riffpass-notificaciones con filtro EMITIDA y CREADO"><figcaption>Notificaciones · EMITIDA + CREADO</figcaption></figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Topología declarada por el administrador al iniciar</div>
+      <div class="slide-no">04</div>
+      <aside class="notes">45 segundos. En vivo: abrir SNS → riffpass-eventos → Subscriptions y entrar a una suscripción. Mostrar Raw message delivery Enabled y la filter policy. Mencionar que auditoría no tiene filtro: recibe todo (fanout completo). Ninguna se creó a mano: las declaró TopologiaMensajeriaConfig.</aside>
+    </section>
+
+    <!-- 05 -->
+    <section class="slide" data-title="Colas y retención" data-time="0:50">
+      <div class="eyebrow">04 · Consola AWS · SQS · Políticas de retención</div>
+      <h2>Seis colas con parámetros justificados por función</h2>
+      <div class="grid-2 r">
+        <div class="stack">
+          <figure class="shot"><img src="assets/ep2/sqs-colas.png" alt="Seis colas SQS estándar, la DLQ de tickets con 1 mensaje"><figcaption>6 colas Standard · cifradas SSE-SQS</figcaption></figure>
+          <p class="muted" style="margin:0"><b class="red">riffpass-tickets-dlq = 1</b>: el mensaje que agotó sus 3 intentos en la prueba de fallo (diapositiva 9). Todas las demás colas en 0: los consumidores están al día.</p>
+        </div>
+        <table>
+          <tr><th>Parámetro</th><th>Tickets</th><th>Notif.</th><th>Auditoría</th></tr>
+          <tr><td>Visibility timeout</td><td>30 s</td><td>30 s</td><td>30 s</td></tr>
+          <tr><td>maxReceiveCount</td><td>3</td><td>5</td><td>5</td></tr>
+          <tr><td>Retención cola</td><td>4 días</td><td>1 día</td><td>7 días</td></tr>
+          <tr><td>Retención DLQ</td><td>14 días</td><td>7 días</td><td>14 días</td></tr>
+          <tr><td>Long polling</td><td>20 s</td><td>20 s</td><td>20 s</td></tr>
+          <tr><td colspan="4" class="muted" style="font-weight:400">
+            <b class="orange">Retención:</b> ticket cubre una caída de fin de semana; un aviso de más de un día ya no sirve; la auditoría no puede perderse.
+            <b class="orange">DLQ:</b> retiene más que su cola (la edad cuenta desde el envío original).
+            <b class="orange">Limpieza:</b> ACK elimina lo procesado, la retención expira lo olvidado y el administrador purga la DLQ revisada.
+          </td></tr>
+        </table>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> riffpass-mensajeria.yml</div>
+      <div class="slide-no">05</div>
+      <aside class="notes">50 segundos. Visibility timeout de 30 s: procesar tarda menos de un segundo; evita que otra réplica tome el mensaje en curso. maxReceiveCount 3 en tickets para detectar rápido un problema del producto; 5 en las otras porque toleran más fallos transitorios. Explicar cómo se evita el crecimiento descontrolado: ACK, expiración por retención, purga y alarma. En vivo: abrir riffpass-tickets → pestaña Dead-letter queue.</aside>
+    </section>
+
+    <!-- 06 -->
+    <section class="slide" data-title="Fanout y filtros" data-time="0:50">
+      <div class="eyebrow">05 · Integración real · Fanout y entrega selectiva</div>
+      <h2>Un clic en el frontend llega a las colas que corresponden</h2>
+      <div class="grid-2 r">
+        <div class="stack">
+          <figure class="shot cover-fit"><img src="assets/ep2/frontend-entrada.png" alt="Frontend: entrada obtenida con su código"><figcaption>Asistente obtiene entrada · JWT → Gateway</figcaption></figure>
+          <figure class="shot cover-fit purple-cap"><img src="assets/ep2/frontend-validar.png" alt="Frontend: organizador valida la entrada"><figcaption>Organizador valida la entrada</figcaption></figure>
+        </div>
+        <div class="stack">
+          <div class="term">
+            <div><span class="t-dim">02:25:05</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-1 <span class="t-key">cola=riffpass-notificaciones</span> tipo=EVENTO_CREADO</div>
+            <div><span class="t-dim">02:25:06</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-2 <span class="t-key">cola=riffpass-auditoria</span> tipo=EVENTO_CREADO</div>
+            <div>&nbsp;</div>
+            <div><span class="t-dim">02:26:08</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-2 <span class="t-key">cola=riffpass-tickets</span> eventoId=afdf3599… tipo=ENTRADA_EMITIDA</div>
+            <div><span class="t-dim">02:26:08</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-2 <span class="t-key">cola=riffpass-notificaciones</span> eventoId=afdf3599…</div>
+            <div><span class="t-dim">02:26:09</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-1 <span class="t-key">cola=riffpass-auditoria</span> eventoId=afdf3599…</div>
+            <div>&nbsp;</div>
+            <div><span class="t-dim">02:27:24</span> <span class="t-ok">PROCESADO</span> instancia=procesamiento-1 <span class="t-key">cola=riffpass-auditoria</span> tipo=ENTRADA_VALIDADA</div>
+          </div>
+          <table class="compact">
+            <tr><th>Acción</th><th>Llega a</th><th>Patrón</th></tr>
+            <tr><td>Crear concierto</td><td>notificaciones + auditoría</td><td class="purple">Filtro</td></tr>
+            <tr><td>Obtener entrada</td><td>las 3 colas, mismo eventoId</td><td class="orange">Fanout</td></tr>
+            <tr><td>Validar entrada</td><td>solo auditoría</td><td class="purple">Filtro</td></tr>
+          </table>
+          <figure class="shot dark half"><img src="assets/ep2/log-fanout-filtro.png" alt="Captura del log de la EC2 con los PROCESADO"><figcaption>Captura original · EC2</figcaption></figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Cognito → Gateway → Spring Boot → SNS → SQS</div>
+      <div class="slide-no">06</div>
+      <aside class="notes">50 segundos. Este es el punto de integración con el Parcial 1: el usuario inicia sesión con Cognito, el JWT viaja por API Gateway y el backend publica el mensaje después del commit. Fanout: usar cuando varios procesos independientes reaccionan al mismo hecho. Filtros: cuando un consumidor solo necesita algunos tipos; el productor no conoce a los consumidores. En vivo: obtener una entrada y mostrar las tres líneas PROCESADO.</aside>
+    </section>
+
+    <!-- 07 -->
+    <section class="slide" data-title="Configuración" data-time="0:35">
+      <div class="eyebrow">06 · Código · Nombres centralizados y topología</div>
+      <h2>Ningún nombre de cola escrito en la lógica de negocio</h2>
+      <div class="grid-2">
+<pre class="code"><span class="c"># riffpass-mensajeria.yml · importado por los 5 servicios</span>
+<span class="k">riffpass.mensajeria</span>:
+  <span class="k">topico</span>: <span class="v">riffpass-eventos</span>
+  <span class="k">colas</span>:
+    <span class="k">tickets</span>:
+      <span class="k">nombre</span>: <span class="v">riffpass-tickets</span>
+      <span class="k">dlq</span>: <span class="v">riffpass-tickets-dlq</span>
+      <span class="k">consumidor</span>: <span class="v">consumidor-tickets</span>
+      <span class="k">tipos</span>: [<span class="v">ENTRADA_EMITIDA</span>]
+      <span class="k">max-recepciones</span>: <span class="v">3</span>
+      <span class="k">visibilidad</span>: <span class="v">30s</span>
+      <span class="k">retencion</span>: <span class="v">4d</span>
+      <span class="k">retencion-dlq</span>: <span class="v">14d</span>
+    <span class="k">notificaciones</span>: <span class="c"># …</span>
+    <span class="k">auditoria</span>:  <span class="c"># tipos: [] → fanout</span>
+
+<span class="c">// Consumidor: el nombre llega por placeholder</span>
+@SqsListener(value = <span class="v">"${…colas.tickets.nombre}"</span>,
+             id = <span class="v">"${…colas.tickets.consumidor}"</span>)</pre>
+        <ul class="points">
+          <li><b>01</b><span><code>MensajeriaProperties</code> es la clase única que lee tópico, colas, DLQ, suscripciones y consumidores.</span></li>
+          <li><b>02</b><span><code>TopologiaMensajeriaConfig</code> declara al iniciar, de forma idempotente: tópico, DLQ, cola con Redrive Policy, política de la cola, suscripción raw con filtro y alarma.</span></li>
+          <li><b>03</b><span>Los servicios de negocio solo publican un <code>EventoMensaje</code>; <code>PublicadorEventos</code> lo envía a SNS después del commit. Sin SDK en controladores ni servicios de dominio.</span></li>
+          <li><b>04</b><span>Consumidores agrupados por dominio: paquetes <code>tickets</code>, <code>notificaciones</code>, <code>auditoria</code>.</span></li>
+        </ul>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Spring Boot 3.5 · Spring Cloud AWS 3.4</div>
+      <div class="slide-no">07</div>
+      <aside class="notes">35 segundos. Cubre tres indicadores del encargo: configuración centralizada, topología declarada por caso de uso y separación entre negocio y mensajería. Si preguntan por qué después del commit: para no anunciar una entrada que finalmente se revirtió.</aside>
+    </section>
+
+    <!-- 08 -->
+    <section class="slide" data-title="ACK y errores" data-time="0:45">
+      <div class="eyebrow">07 · Consumidores · Confirmación explícita</div>
+      <h2>Cada mensaje termina en una de cuatro rutas</h2>
+      <div class="paths">
+        <div class="path">
+          <div class="when mint">Éxito</div>
+          <p>El trabajo y el registro de idempotencia se confirman en la misma transacción.</p>
+          <div class="act">ACK manual → SQS lo elimina</div>
+        </div>
+        <div class="path dup">
+          <div class="when purple">Duplicado</div>
+          <p>SQS entrega al menos una vez. El <code>eventoId</code> ya está en <code>mensajes_procesados</code> (<code>ON CONFLICT DO NOTHING</code>), aunque lo reciba la otra réplica.</p>
+          <div class="act">ACK sin reprocesar</div>
+        </div>
+        <div class="path warn">
+          <div class="when orange">Recuperable</div>
+          <p>Timeout o dependencia caída. Rollback, sin ACK, backoff 5 s → 10 s → 20 s con <code>Visibility</code>. Al agotar <code>maxReceiveCount</code>, la Redrive Policy lo mueve.</p>
+          <div class="act">Sin ACK → reintento → DLQ</div>
+        </div>
+        <div class="path err">
+          <div class="when red">No recuperable</div>
+          <p>JSON inválido, tipo ajeno a la cola o dato faltante. Reintentar nunca funcionaría.</p>
+          <div class="act">Envío explícito a la DLQ con causa → ACK</div>
+        </div>
+      </div>
+      <p class="lead" style="margin:22px 0 0; max-width:none;">Todo mensaje no entregado deja en el log <b class="orange">id, intento y causa</b>. Una sola clase, <code>ManejadorMensajes</code>, aplica la política a los tres consumidores.</p>
+      <div class="footer-mark"><span class="note-icon">♪</span> AcknowledgementMode.MANUAL</div>
+      <div class="slide-no">08</div>
+      <aside class="notes">45 segundos. Este es el indicador de mayor peso del encargo (20%). Destacar la diferencia entre recuperable y no recuperable: el recuperable se reintenta con espera creciente; el no recuperable va directo a la DLQ para no gastar recepciones inútiles. Si el envío a la DLQ fallara, no se hace ACK y la Redrive Policy actúa como red de seguridad.</aside>
+    </section>
+
+    <!-- 09 -->
+    <section class="slide" data-title="Flujo fallido" data-time="0:50">
+      <div class="eyebrow">08 · Flujo fallido hasta la DLQ</div>
+      <h2>Tres intentos, backoff y Redrive Policy, sin afectar las otras colas</h2>
+      <div class="grid-2 r">
+        <div class="stack">
+          <figure class="shot purple-cap half"><img src="assets/ep2/sns-publicar.png" alt="Publicación desde SNS con simulación PERMANENTE en tickets"><figcaption>Publicación con fallo simulado en tickets</figcaption></figure>
+          <figure class="shot red-cap"><img src="assets/ep2/alarma-roja.png" alt="Alarma de la DLQ de tickets en estado In alarm"><figcaption>CloudWatch · In alarm 02:52:47</figcaption></figure>
+        </div>
+        <div class="stack">
+          <div class="term">
+            <div><span class="t-dim">02:50:08</span> <span class="t-warn">REINTENTO</span> cola=riffpass-tickets <span class="t-key">sqsId=fba4b5b5…</span> eventoId=1111… <b>intento=1/3</b></div>
+            <div style="padding-left:7.2em" class="t-dim">causa="ErrorRecuperable: Dependencia no disponible" proximoEnSeg=5</div>
+            <div><span class="t-dim">02:50:09</span> <span class="t-ok">PROCESADO</span> cola=riffpass-notificaciones eventoId=1111…</div>
+            <div><span class="t-dim">02:50:10</span> <span class="t-ok">PROCESADO</span> cola=riffpass-auditoria eventoId=1111…</div>
+            <div><span class="t-dim">02:50:13</span> <span class="t-warn">REINTENTO</span> cola=riffpass-tickets <span class="t-key">sqsId=fba4b5b5…</span> <b>intento=2/3</b> proximoEnSeg=10</div>
+            <div><span class="t-dim">02:50:23</span> <span class="t-err">NO ENTREGADO</span> cola=riffpass-tickets <span class="t-key">sqsId=fba4b5b5…</span> <b>intento=3/3</b></div>
+            <div style="padding-left:7.2em">destino=<span class="t-err">riffpass-tickets-dlq</span> via=RedrivePolicy</div>
+          </div>
+          <figure class="shot dark"><img src="assets/ep2/log-dlq-completo.png" alt="Captura del log con reintentos, no entregado y procesado tras reproceso"><figcaption>Captura original · EC2</figcaption></figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> maxReceiveCount = 3</div>
+      <div class="slide-no">09</div>
+      <aside class="notes">50 segundos. Lectura del log: intento 1 y 2 se reintentan con 5 y 10 segundos; el 3 agota maxReceiveCount y SQS lo mueve a la DLQ. Mientras tanto notificaciones y auditoría procesaron el mismo mensaje: el fallo queda aislado en su cola. El sqsId fba4b5b5 es el que luego aparece almacenado en la DLQ. Unos 2,5 minutos después, la alarma pasó a In alarm.</aside>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" data-title="Dos réplicas" data-time="0:40">
+      <div class="eyebrow">09 · Disponibilidad</div>
+      <h2>Se detiene una réplica y no se pierde ningún mensaje</h2>
+      <div class="grid-2 l">
+        <div class="stack">
+          <div class="term">
+            <div class="t-dim">$ sudo systemctl stop riffpass-procesamiento@1</div>
+            <div><span class="t-dim">02:33:18</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-notificaciones tipo=EVENTO_CREADO</div>
+            <div><span class="t-dim">02:33:18</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-auditoria tipo=EVENTO_CREADO</div>
+            <div><span class="t-dim">02:34:06</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-auditoria …</div>
+            <div><span class="t-dim">02:34:54</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-notificaciones …</div>
+            <div><span class="t-dim">02:37:22</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-notificaciones …</div>
+            <div><span class="t-dim">02:37:50</span> <span class="t-ok">PROCESADO</span> <span class="t-key">instancia=procesamiento-2</span> cola=riffpass-auditoria …</div>
+          </div>
+          <figure class="shot dark"><img src="assets/ep2/log-replica.png" alt="Captura del log: todo procesado por procesamiento-2"><figcaption>Captura original · 4 conciertos, 0 pérdidas</figcaption></figure>
+        </div>
+        <div>
+          <h3>Antes</h3>
+          <p class="muted">Ambas réplicas escuchan las mismas tres colas; los logs alternan <code>procesamiento-1</code> y <code>procesamiento-2</code>.</p>
+          <h3 style="margin-top:22px">Por qué no se pierde</h3>
+          <p class="muted">SQS solo borra un mensaje con ACK. Al detenerse, la réplica termina lo que tiene en curso (apagado ordenado) y deja de pedir mensajes. Si muriera abruptamente, el mensaje sin ACK reaparece al vencer el visibility timeout y lo toma la otra.</p>
+          <h3 style="margin-top:22px">Sin doble proceso</h3>
+          <p class="muted">La tabla de idempotencia es compartida: aunque ambas reciban el mismo mensaje, solo una lo procesa.</p>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> riffpass-procesamiento@1 · @2</div>
+      <div class="slide-no">10</div>
+      <aside class="notes">40 segundos. En vivo: sudo systemctl stop riffpass-procesamiento@1, crear dos conciertos desde la web y mostrar que todo lo procesa procesamiento-2. Luego systemctl start. Explicar el mecanismo: visibility timeout + ACK.</aside>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide" data-title="Administrador" data-time="0:45">
+      <div class="eyebrow">10 · Microservicio administrador</div>
+      <h2>Una API REST para operar la mensajería en vivo</h2>
+      <div class="grid-2 r">
+        <table class="compact">
+          <tr><th>Recurso</th><th>Operaciones</th></tr>
+          <tr><td><code>/topicos</code></td><td>GET · POST · DELETE · publicar prueba</td></tr>
+          <tr><td><code>/topicos/{t}/suscripciones</code></td><td>GET · POST · PUT filtro · DELETE</td></tr>
+          <tr><td><code>/colas</code></td><td>GET estado · POST con DLQ · DELETE</td></tr>
+          <tr><td><code>/colas/{c}/dlq/mensajes</code></td><td>GET ver · DELETE purgar</td></tr>
+          <tr><td><code>/colas/{c}/dlq/reprocesos</code></td><td>POST reprocesar</td></tr>
+          <tr><td><code>/consumidores/{id}/estado</code></td><td>PUT ACTIVO / PAUSADO en las 2 réplicas</td></tr>
+          <tr><td colspan="2" class="muted" style="font-weight:400">Toda la lógica vive en <code>ColaAdminService</code>; los controladores solo delegan. Protegido por Gateway y Spring: grupo <code>ADMINISTRADOR</code> + scope <code>mensajeria-admin</code>. Los recursos declarados exigen <code>forzar=true</code> para eliminarse.</td></tr>
+        </table>
+        <div class="stack">
+          <figure class="shot dark mint-cap half"><img src="assets/ep2/postman-admin-a.png" alt="Postman: listar, pausar, reanudar consumidores y crear cola y tópico"><figcaption>Pausar · reanudar · crear</figcaption></figure>
+          <figure class="shot dark mint-cap half"><img src="assets/ep2/postman-admin-b.png" alt="Postman: suscribir, cambiar filtro, eliminar suscripción, tópico y colas"><figcaption>Suscripciones · eliminar</figcaption></figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> /api/admin/{proxy+} · Cognito Authorizer</div>
+      <div class="slide-no">11</div>
+      <aside class="notes">45 segundos. En vivo con Postman: E15 pausa el consumidor de tickets en ambas réplicas; publicar E06 y ver en E03 que sube mensajesDisponibles; E16 lo reanuda y la cola se vacía. E17 a E24 crean y eliminan cola, tópico y suscripción, y el efecto se ve refrescando la consola de SQS/SNS.</aside>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide" data-title="Reprocesar DLQ" data-time="0:40">
+      <div class="eyebrow">11 · Administrador sobre la DLQ</div>
+      <h2>Reprocesar devuelve el mensaje y la alarma vuelve a OK</h2>
+      <div class="grid-2">
+        <div class="stack">
+          <figure class="shot dark mint-cap half"><img src="assets/ep2/postman-reproceso.png" alt="Postman: reprocesados 1, id fba4b5b5"><figcaption>E12 · reprocesados: 1 · id fba4b5b5</figcaption></figure>
+          <div class="term" style="flex:0 0 auto">
+            <div><span class="t-dim">03:17:03</span> <span class="t-ok">PROCESADO</span> cola=riffpass-tickets sqsId=832dddcb… <span class="t-key">eventoId=11111111-…</span> intento=1</div>
+          </div>
+        </div>
+        <div class="stack">
+          <figure class="shot purple-cap"><img src="assets/ep2/alarma-ok.png" alt="Alarmas de CloudWatch de nuevo en OK"><figcaption>CloudWatch · OK 03:19:47</figcaption></figure>
+          <p class="muted" style="margin:0">El reproceso envía de nuevo cuerpo y atributos a la cola original, suma el atributo <code>reprocesos</code> y recién entonces elimina el mensaje de la DLQ. El <code>sqsId</code> cambia, el <code>eventoId</code> mantiene la trazabilidad. Purgar repetido antes de 60 s responde <b>409</b>, como exige SQS.</p>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Ciclo completo: fallo → DLQ → alarma → reproceso → OK</div>
+      <div class="slide-no">12</div>
+      <aside class="notes">40 segundos. En vivo: E11 muestra el mensaje en la DLQ con el mismo sqsId del log; E12 lo reprocesa; el log muestra PROCESADO en tickets con el mismo eventoId; minutos después la alarma vuelve a OK. Mencionar que la simulación PERMANENTE representa una dependencia que se corrigió antes de reprocesar.</aside>
+    </section>
+
+    <!-- 13 -->
+    <section class="slide" data-title="CloudWatch" data-time="0:45">
+      <div class="eyebrow">12 · Monitoreo</div>
+      <h2>Cuatro métricas y una alarma que exige actuar</h2>
+      <div class="grid-2 l">
+        <table>
+          <tr><th>Métrica AWS/SQS</th><th>Qué indica</th><th>Decisión</th></tr>
+          <tr><td><code>ApproximateNumberOfMessagesVisible</code></td><td>Pendientes de procesar</td><td>Crece sostenido: faltan consumidores o hay uno pausado</td></tr>
+          <tr><td><code>ApproximateNumberOfMessagesNotVisible</code></td><td>En proceso, sin ACK</td><td>Alto y estable: consumidores colgados o visibility corto</td></tr>
+          <tr><td><code>ApproximateAgeOfOldestMessage</code></td><td>Retraso real</td><td>Cerca de la retención: se perderán mensajes, escalar</td></tr>
+          <tr><td>Mensajes en DLQ</td><td>No entregados</td><td>Mayor que 0: revisar log, corregir y reprocesar o purgar</td></tr>
+        </table>
+        <div class="stack" style="justify-content:center">
+          <div class="big">≥ 1</div>
+          <h3>mensaje en una DLQ dispara la alarma</h3>
+          <p class="muted">Máximo en 1 período de 60 s; datos faltantes = OK. En RiffPass cada mensaje en una DLQ es un ticket sin generar, un aviso no enviado o una auditoría faltante. Notifica al tópico <code>riffpass-alertas</code>.</p>
+          <div><span class="stamp red-bg">In alarm 02:52</span> &nbsp; <span class="stamp">OK 03:19</span></div>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> 3 alarmas · una por DLQ</div>
+      <div class="slide-no">13</div>
+      <aside class="notes">45 segundos. En vivo: CloudWatch → Metrics → SQS → Queue Metrics, filtrar riffpass-tickets y mostrar las cuatro métricas en el período de la prueba. Explicar qué decisión se toma con cada una. Mostrar la alarma y su historial In alarm → OK.</aside>
+    </section>
+
+    <!-- 14 -->
+    <section class="slide" data-title="Despliegue" data-time="0:30">
+      <div class="eyebrow">13 · Integración con el Parcial 1</div>
+      <h2>Misma entrada pública, nueva ruta protegida</h2>
+      <div class="grid-2">
+        <figure class="shot"><img src="assets/ep2/gateway-deploy.png" alt="API Gateway con recurso /api/admin/{proxy+} desplegado en test"><figcaption>Gateway · /api/admin/{proxy+} en stage test</figcaption></figure>
+        <div class="stack">
+          <figure class="shot purple-cap half"><img src="assets/ep2/alb-regla.png" alt="Regla del ALB /test/api/admin/* hacia riffpass-admin-tg"><figcaption>ALB interno · prioridad 5</figcaption></figure>
+          <figure class="shot mint-cap half"><img src="assets/ep2/admin-tg.png" alt="Target group del administrador con 1 target healthy"><figcaption>riffpass-admin-tg · Healthy</figcaption></figure>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> EC2 con LabInstanceProfile · sin credenciales en el código</div>
+      <div class="slide-no">14</div>
+      <aside class="notes">30 segundos. Se mantiene todo lo del Parcial 1: base cloud, validación JWT en cada servicio, login con Cognito y consumo por API Gateway. La EC2 obtiene credenciales temporales del rol del laboratorio, por eso no hay claves AWS en el repositorio. Los consumidores 8083/8085 no se exponen; el administrador los llama por 127.0.0.1.</aside>
+    </section>
+
+    <!-- 15 -->
+    <section class="slide" data-title="Demostración" data-time="0:30">
+      <div class="eyebrow">14 · Guion de la demostración</div>
+      <h2>Recorrido en vivo</h2>
+      <div class="grid-2 l">
+        <ol class="demo-path">
+          <li><span>Consola: tópico, suscripciones (raw + filtro), 6 colas y Redrive Policy.</span></li>
+          <li><span>Frontend: obtener entrada → 3 <code>PROCESADO</code> (fanout).</span></li>
+          <li><span>Validar entrada → solo auditoría (filtro).</span></li>
+          <li><span>SNS con <code>PERMANENTE@TICKETS</code> → reintentos y DLQ.</span></li>
+          <li><span>CloudWatch: métricas y alarma en rojo.</span></li>
+          <li><span>Administrador: ver, reprocesar y purgar DLQ; pausar y reanudar.</span></li>
+          <li><span>Detener una réplica y seguir procesando.</span></li>
+        </ol>
+        <div class="stack" style="justify-content:center">
+          <div class="big">9</div>
+          <h3>minutos aprox.</h3>
+          <p class="muted">Dentro del rango de 5 a 10 minutos. Antes: iniciar el Learner Lab, revisar los 5 servicios, renovar tokens y usar un <code>id</code> nuevo en cada publicación de prueba.</p>
+        </div>
+      </div>
+      <div class="footer-mark"><span class="note-icon">♪</span> Plan de presentación</div>
+      <div class="slide-no">15</div>
+      <aside class="notes">30 segundos. Checklist previo: laboratorio en verde, nueva IP pública para SSH, systemctl status de los 5 servicios, target groups Healthy, token admin nuevo en Postman, journalctl abierto, y un id distinto en el JSON de SNS (si se repite, el consumidor lo descarta como DUPLICADO).</aside>
+    </section>
+
+    <!-- 16 -->
+    <section class="slide closing" data-title="Cierre" data-time="0:20">
+      <div class="eyebrow">RiffPass · EP2 DSY1107</div>
+      <h2>Mensajería desacoplada, resiliente y administrable</h2>
+      <div class="summary">
+        <span><b>1</b>tópico SNS</span>
+        <span><b>3</b>colas + 3 DLQ</span>
+        <span><b>2</b>patrones de ruteo</span>
+        <span><b>2</b>réplicas</span>
+        <span><b>36</b>pruebas Java</span>
+        <span><b>0</b>mensajes perdidos</span>
+      </div>
+      <aside class="notes">20 segundos. Cerrar con lo verificado en AWS real y abrir preguntas.</aside>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="Controles de presentación">
+    <button id="prev" title="Anterior" aria-label="Diapositiva anterior">←</button>
+    <div class="counter" id="counter">1 / 16</div>
+    <button id="next" title="Siguiente" aria-label="Diapositiva siguiente">→</button>
+    <button id="notesBtn" title="Notas del expositor (P)" aria-label="Mostrar notas">P</button>
+    <button id="fullBtn" title="Pantalla completa (F)" aria-label="Pantalla completa">F</button>
+  </div>
+  <div class="progress" id="progress"></div>
+  <div class="notes-panel" id="notesPanel"></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Captura ampliada"><img id="lightboxImg" alt=""></div>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    const notesPanel = document.getElementById('notesPanel');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.slice(1)) - 1 || 0));
+
+    function show(nextIndex) {
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      location.hash = String(index + 1);
+      const note = slides[index].querySelector('.notes');
+      notesPanel.innerHTML = note ? `<strong>${slides[index].dataset.title} · ${slides[index].dataset.time}</strong><br>${note.innerHTML}` : '';
+      document.title = `${index + 1}/${slides.length} · ${slides[index].dataset.title} · RiffPass EP2`;
+    }
+    function toggleNotes() { notesPanel.classList.toggle('open'); }
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+    function openZoom(img) { lightboxImg.src = img.src; lightboxImg.alt = img.alt; lightbox.classList.add('open'); }
+    function closeZoom() { lightbox.classList.remove('open'); }
+
+    document.querySelectorAll('.shot img').forEach(img => img.addEventListener('click', () => openZoom(img)));
+    lightbox.addEventListener('click', closeZoom);
+    document.getElementById('prev').addEventListener('click', () => show(index - 1));
+    document.getElementById('next').addEventListener('click', () => show(index + 1));
+    document.getElementById('notesBtn').addEventListener('click', toggleNotes);
+    document.getElementById('fullBtn').addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('keydown', (event) => {
+      if (lightbox.classList.contains('open')) { if (event.key === 'Escape' || event.key === ' ') { event.preventDefault(); closeZoom(); } return; }
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); show(index + 1); }
+      if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+      if (event.key === 'Home') show(0);
+      if (event.key === 'End') show(slides.length - 1);
+      if (event.key.toLowerCase() === 'p') toggleNotes();
+      if (event.key.toLowerCase() === 'f') toggleFullscreen();
+      if (event.key === 'Escape') notesPanel.classList.remove('open');
+    });
+
+    let touchStart = 0;
+    document.addEventListener('touchstart', (event) => { touchStart = event.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', (event) => {
+      if (lightbox.classList.contains('open')) return;
+      const delta = event.changedTouches[0].screenX - touchStart;
+      if (Math.abs(delta) > 60) show(index + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+
+    show(index);
+  </script>
+</body>
+</html>
